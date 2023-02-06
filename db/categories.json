@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Phone",
+    "amharic": "ስልክ"
+  },
+  {
+    "name": "Laptop",
+    "amharic": "ላፕቶፕ"
+  },
+  {
+    "name": "Desktop",
+    "amharic": "ዴስክቶፕ"
+  },
+  {
+    "name": "Furniture",
+    "amharic": "የቤት ዕቃዎች"
+  },
+  {
+    "name": "Accessory",
+    "amharic": "መለዋወጫ"
+  },
+  {
+    "name": "Car",
+    "amharic": "መኪና"
+  },
+  {
+    "name": "Motorcycles",
+    "amharic": "ሞተርሳይክል"
+  },
+  {
+    "name": "Shoes",
+    "amharic": "ጫማ"
+  },
+  {
+    "name": "Necklaces",
+    "amharic": "የአንገት ሐብል"
+  },
+  {
+    "name": "Sunglasses",
+    "amharic": "የፀሐይ መነፅር"
+  }
+]

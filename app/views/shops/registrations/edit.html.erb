@@ -1,0 +1,23 @@
+<div id="login">
+  <h2><%= active_admin_application.site_title(self) %> <%= title t("Edit account") %></h2>
+
+  <% scope = Devise::Mapping.find_scope!(resource_name) %>
+  <%= render partial: "active_admin/devise/shared/error_messages", resource: resource %>
+
+  <%= active_admin_form_for(resource, as: resource_name, url: send(:"#{scope}_registration_path"), html: { method: :put, id: "registration_new" }) do |f|
+        f.inputs do
+          placeholder = current_user.admin? ? nil : "Shop name"
+          f.input :name, label: "Name", placeholder: placeholder
+          f.input :password, label: t("active_admin.devise.password.title")
+          f.input :password_confirmation, label: t("active_admin.devise.password_confirmation.title")
+          f.input :current_password, label: "Current Password"
+        end
+        f.actions do
+          f.action :submit, label: "Update"
+        end
+      end %>
+  <% unless current_user.admin? %>
+   <%= button_to "Delete", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %>
+  <% end %>
+</div>
+

@@ -1,0 +1,63 @@
+am:
+  devise:
+    confirmations:
+      confirmed: "የኢሜል አድራሻዎ በተሳካ ሁኔታ ተረጋግጧል።"
+      send_instructions: "የኢሜል አድራሻዎን በጥቂት ደቂቃዎች ውስጥ እንዴት ማረጋገጥ እንደሚችሉ መመሪያዎችን የያዘ ኢሜይል ይደርስዎታል።"
+      send_paranoid_instructions: "የኢሜል አድራሻዎ በእኛ ዳታቤዝ ውስጥ ካለ፣ የኢሜል አድራሻዎን በጥቂት ደቂቃዎች ውስጥ እንዴት ማረጋገጥ እንደሚችሉ መመሪያዎችን የያዘ ኢሜይል ይደርስዎታል።"
+    failure:
+      already_authenticated: "አስቀድመው ገብተዋል።"
+      inactive: "Your account is not activated yet."
+      invalid: "ልክ ያልሆነ ኢሜይል ወይም የይለፍ ቃል።"
+      locked: "መለያህ ተቆልፏል።"
+      last_attempt: "መለያህ ከመቆለፉ በፊት አንድ ተጨማሪ ሙከራ አለህ።"
+      not_found_in_database: "ልክ ያልሆነ ኢሜይል ወይም የይለፍ ቃል።"
+      timeout: "ክፍለ ጊዜዎ ጊዜው አልፎበታል። ለመቀጠል እባክዎ እንደገና ይግቡ።"
+      unauthenticated: "ከመቀጠልዎ በፊት በመለያ መግባት ወይም መመዝገብ አለብዎት።"
+      unconfirmed: "ከመቀጠልዎ በፊት የኢሜል አድራሻዎን ማረጋገጥ አለብዎት."
+    mailer:
+      confirmation_instructions:
+        subject: "የማረጋገጫ መመሪያዎች"
+      reset_password_instructions:
+        subject: "የይለፍ ቃል መመሪያዎችን ዳግም አስጀምር"
+      unlock_instructions:
+        subject: "መመሪያዎችን ይክፈቱ"
+      email_changed:
+        subject: "ኢሜል ተለውጧል"
+      password_change:
+        subject: "የይለፍ ቃል ተቀይሯል።"
+    omniauth_callbacks:
+      failure: '"%{ምክንያት}" ምክንያት እርስዎን ከ%{አይነት} ማረጋገጥ አልተቻለም።'
+      success: "ከ%{kind} መለያ በተሳካ ሁኔታ የተረጋገጠ."
+    passwords:
+      no_token: "ከይለፍ ቃል ዳግም ማስጀመሪያ ኢሜይል ሳይመጡ ይህን ገጽ መድረስ አይችሉም። ከይለፍ ቃል ዳግም ማስጀመሪያ ኢሜይል የመጣህ ከሆነ፣ እባክህ የቀረበውን ሙሉ ዩአርኤል መጠቀምህን አረጋግጥ።"
+      send_instructions: "የይለፍ ቃልዎን በጥቂት ደቂቃዎች ውስጥ እንዴት ዳግም እንደሚያስጀምሩ መመሪያዎችን የያዘ ኢሜይል ይደርስዎታል።"
+      send_paranoid_instructions: "የኢሜል አድራሻዎ በእኛ ዳታቤዝ ውስጥ ካለ ከጥቂት ደቂቃዎች በኋላ የይለፍ ቃል መልሶ ማግኛ አገናኝ በኢሜል አድራሻዎ ላይ ይደርሰዎታል ።"
+      updated: "የይለፍ ቃልህ በተሳካ ሁኔታ ተለውጧል። አሁን ገብተሃል።"
+      updated_not_active: "የይለፍ ቃልህ በተሳካ ሁኔታ ተለውጧል።"
+    registrations:
+      destroyed: "ባይ! መለያዎ በተሳካ ሁኔታ ተሰርዟል። በቅርቡ እንደገና እንደምናገኝ ተስፋ እናደርጋለን።"
+      signed_up: "እንኳን ደህና መጣህ! በተሳካ ሁኔታ ተመዝግበዋል።"
+      signed_up_but_inactive: "በተሳካ ሁኔታ ተመዝግበዋል። ነገር ግን፣ መለያህ እስካሁን ስላልነቃ ልናስገባህ አልቻልንም።"
+      signed_up_but_locked: "በተሳካ ሁኔታ ተመዝግበዋል። ነገር ግን መለያህ ስለተቆለፈ ልንገባህ አልቻልንም።"
+      signed_up_but_unconfirmed: "የማረጋገጫ አገናኝ ያለው መልእክት ወደ ኢሜል አድራሻዎ ተልኳል። እባክዎ መለያዎን ለማግበር አገናኙን ይከተሉ።"
+      update_needs_confirmation: "መለያዎን በተሳካ ሁኔታ አዘምነዋል፣ ነገር ግን አዲሱን የኢሜይል አድራሻዎን ማረጋገጥ አለብን። አዲሱን የኢሜል አድራሻዎን ለማረጋገጥ እባክዎ ኢሜልዎን ያረጋግጡ እና የማረጋገጫ ማገናኛን ይከተሉ።"
+      updated: "መለያዎ በተሳካ ሁኔታ ዘምኗል።"
+      updated_but_not_signed_in: "መለያህ በተሳካ ሁኔታ ተዘምኗል፣ ነገር ግን የይለፍ ቃልህ ስለተቀየረ፣ እንደገና መግባት አለብህ።"
+    sessions:
+      signed_in: "በተሳካ ሁኔታ ገብተሃል።"
+      signed_out: "በተሳካ ሁኔታ ዘግተው ወጥተዋል።"
+      already_signed_out: "በተሳካ ሁኔታ ዘግተው ወጥተዋል።"
+    unlocks:
+      send_instructions: "መለያዎን በጥቂት ደቂቃዎች ውስጥ እንዴት እንደሚከፍቱ መመሪያ የያዘ ኢሜይል ይደርስዎታል።"
+      send_paranoid_instructions: "መለያህ ካለ፣ በጥቂት ደቂቃዎች ውስጥ እንዴት እንደሚከፍት መመሪያ የያዘ ኢሜይል ይደርስሃል።"
+      unlocked: "መለያዎ በተሳካ ሁኔታ ተከፍቷል። ለመቀጠል እባክዎ ይግቡ."
+  errors:
+    messages:
+      already_confirmed: "አስቀድሞ ተረጋግጧል፣ እባክዎ ለመግባት ይሞክሩ"
+      confirmation_period_expired: "በ%{period} ውስጥ መረጋገጥ አለበት፣ እባክዎ አዲስ ይጠይቁ"
+      expired: "ጊዜው አልፎበታል፣ እባክዎ አዲስ ይጠይቁ"
+      not_found: "አልተገኘም"
+      not_locked: "አልተቆለፈም።"
+      not_saved:
+        one: "1 ስህተት ይህ %{resource} እንዳይቀመጥ ከልክሏል፡-"
+        other: "%{count} ስህተቶች ይህ %{resource} እንዳይቀመጥ ተከልክለዋል፡-"
