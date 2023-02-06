@@ -13,7 +13,6 @@ gem "pg", "~> 1.4"
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
-# gem "jbuilder"
 
 gem "redis", "~> 4.0"
 gem "devise"
