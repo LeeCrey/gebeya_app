@@ -6,6 +6,7 @@ class ProductsController < ApplicationController
 
   # append_before_action :recommend, :trending, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
+  before_action :set_category, only: %i[index]
   append_before_action :list_of_products, only: %i[index]
 
   # GET /products or /products.json
@@ -18,11 +19,13 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
-    @product = Product.includes(:votes_for, images_attachments: :blob).where(id: params[:id]).references(:images_attachments).first
-    @related = Product.includes(:votes_for, images_attachments: :blob).where(category_id: @product.category_id)
+    @product = Product.includes(images_attachments: :blob).where(id: params[:id]).references(:images_attachments).first
+    @related = Product.includes(images_attachments: :blob)
+      .where(category_id: @product.category_id)
+      .where.not(id: (@exclude_ids << @product.id))
+      .order(updated_at: :desc)
       .references(:images_attachments)
-      .where.not(id: @exclude_ids)
-      .order(updated_at: :desc).limit(6)
+      .limit(6)
 
     lst = @related.last
 
@@ -54,16 +57,20 @@ class ProductsController < ApplicationController
     query.downcase!
     @products = Product.includes(images_attachments: :blob).joins(:category)
     .where.not(id: @exclude_ids)
-    .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{query}%", query).limit(10)
+    .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{query}%", query)
+    .order(id: :desc)
+    .limit(10)
 
-    render json: @products
+    render json: {
+      products: ActiveModelSerializers::SerializableResource.new(@products, each_serializer: ProductSerializer)
+    }
   end
 
   private
 
   def set_exclude_ids
     if customer_signed_in?
-      cart_products = CartItem.joins(:product).where(cart_id: current_customer.cart_ids).pluck(:product_id)
+      cart_products = CartItem.joins(:cart).where(cart: { customer_id: current_customer.id }).pluck(:product_id)
       order_products = OrderItem.joins(:order).where(order: { customer_id: current_customer.id }).pluck(:product_id)
       @exclude_ids = cart_products + order_products
     else
@@ -105,25 +112,18 @@ class ProductsController < ApplicationController
 
   # list of products
   def list_of_products
-    cat = params[:category]&.titlecase
 
-    if cat == "All"
+    if @category == "All"
       @products = Product.get_list_but_exclude(@exclude_ids).to_a
     else
-      category = Category.find_by(name: cat)
+      category = Category.find_by(name: @category)
       @products = Product.with_category(category, @exclude_ids).to_a
     end
 
     @products.delete_at(-1) if @products.size.odd?
   end
 
-  # for authorized
-  def for_signed_in_customer
-    @recommended = Product.all.limit(6)
-  end
-
-  # for un authorized request
-  def for_guest
-    @recommended = Product.where.not(id: @products.ids).limit(6)
+  def set_category
+    @category = params[:category]&.titlecase ||= "All"
   end
 end

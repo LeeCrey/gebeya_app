@@ -7,6 +7,8 @@ ActiveAdmin.register Product, namespace: "shops" do
 
   includes([:category])
 
+  config.per_page = 10
+
   # Filters
   filter :name
   filter :origin

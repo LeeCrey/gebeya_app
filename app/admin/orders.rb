@@ -2,11 +2,26 @@
 
 ActiveAdmin.register Order, namespace: "shops" do
   config.filters = false
+  config.per_page = 10
+
   menu if: proc { !(current_admin_user.admin? || current_admin_user.super_admin?) }
 
   actions :all, except: %i[new edit update destroy]
 
   includes([:customer])
+
+  # # Scopes
+  scope "Saved", group: :status do |orders|
+    orders.where(status: :saved)
+  end
+
+  scope "Paid", group: :status do |orders|
+    orders.where(status: :paid)
+  end
+
+  scope "Cancelled", group: :status do |orders|
+    orders.where(status: :canceled)
+  end
 
   # index page
   index do

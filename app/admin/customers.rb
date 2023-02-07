@@ -3,6 +3,8 @@
 ActiveAdmin.register Customer do
   menu if: proc { current_admin_user.admin? || current_admin_user.super_admin? }
 
+  config.per_page = 15
+
   index do
     selectable_column
     id_column
