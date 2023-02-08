@@ -39,7 +39,7 @@ module ProductConcern
             includes(images_attachments: :blob)
               .where.not(id: ids).references(:images_attachments)
               .limit(8)
-              # .random_records(8)
+            # .random_records(16)
           end
   end
 

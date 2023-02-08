@@ -6,10 +6,7 @@ class ProductsController < ApplicationController
 
   # append_before_action :recommend, :trending, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
-  before_action :set_category, only: %i[index]
-  append_before_action :set_trending, only: %[index]
-  append_before_action :list_of_products, only: %i[index]
-  append_before_action :prepare_recommended, only: %i[index]
+  append_before_action :set_category, :set_trending, :list_of_products, :prepare_recommended, only: %[index]
 
   # GET /products or /products.json
   def index
