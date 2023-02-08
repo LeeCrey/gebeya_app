@@ -22,21 +22,24 @@ module ProductConcern
                        size: { less_than: 1.megabytes, message: "is too large" }
 
     # SCOPES
-    scope :list_get, ->(ids) do
-            includes(:votes_for, images_attachments: :blob).where.not(id: ids).references(:images_attachments, :votes_for).limit(8)
-          end
-    scope :with_category, ->(category, exclude_ids) do
-            includes(:votes_for, images_attachments: :blob).where(category_id: category.id)
-              .where.not(id: exclude_ids).references(:images_attachments, :votes_for)
-            # with_attached_images.where(category_id: cat_id).where.not(id: ids).references(:images_attachments).limit(8)
-          end
     scope :recent, ->(limit, shop_id) do
             where(admin_user_id: shop_id.id).order(id: :asc).limit(limit)
           end
+    scope :list_get, ->(ids) do
+            includes(images_attachments: :blob).where.not(id: ids).references(:images_attachments).random_records(8)
+          end
+    scope :with_category, ->(category, exclude_ids) do
+            includes(images_attachments: :blob)
+              .where(category_id: category.id)
+              .where.not(id: exclude_ids).references(:images_attachments)
+              .random_records(8)
+          end
 
     scope :get_list_but_exclude, ->(ids) do
-            includes(:votes_for, images_attachments: :blob)
-              .where.not(id: ids).references(:images_attachments, :votes_for).limit(8)
+            includes(images_attachments: :blob)
+              .where.not(id: ids).references(:images_attachments)
+              .limit(8)
+              # .random_records(8)
           end
   end
 

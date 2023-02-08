@@ -26,9 +26,8 @@ class ProductsController < ApplicationController
     @related = Product.includes(images_attachments: :blob)
       .where(category_id: @product.category_id)
       .where.not(id: (@exclude_ids << @product.id))
-      .order(updated_at: :desc)
       .references(:images_attachments)
-      .limit(6)
+      .random_records(6)
 
     lst = @related.last
 

@@ -17,10 +17,17 @@ module ProductsConcern
   # GET /recommend
   def prepare_recommended
     if customer_signed_in?
-      # based on search history
-      @recommend = []
+      history = current_customer.search_histories.random_records(1)&.first.body
+      @exclude_ids << @products.map(&:id)
+      if history
+        @recommend = Product.includes(images_attachments: :blob)
+        .joins(:category)
+        .where.not(id: @exclude_ids)
+        .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{history}%", history)
+        .random_records(6)
+      end
     else
-      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products.map(&:id)).last(6)
+      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products).random_records(6)
     end
   end
 

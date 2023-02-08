@@ -23,6 +23,7 @@ gem "activeadmin"
 # gem "ransack"
 gem "acts_as_votable"
 gem "fx", "~> 0.7.0"
+gem "quick_random_records"
 
 gem "aws-sdk"
 
