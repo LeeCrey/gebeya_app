@@ -10,4 +10,11 @@ class ProfileController < ApplicationController
   def show
     render json: current_customer
   end
+
+  # DELETE /search_histories
+  def search_history
+    current_customer.search_histories.destroy_all
+
+    head :no_content
+  end
 end

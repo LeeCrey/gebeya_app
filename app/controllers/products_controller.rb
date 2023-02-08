@@ -7,13 +7,16 @@ class ProductsController < ApplicationController
   # append_before_action :recommend, :trending, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
   before_action :set_category, only: %i[index]
+  append_before_action :set_trending, only: %[index]
   append_before_action :list_of_products, only: %i[index]
+  append_before_action :prepare_recommended, only: %i[index]
 
   # GET /products or /products.json
   def index
     render json: {
-             products: ActiveModelSerializers::SerializableResource.new(@products, each_serializer: ProductSerializer),
-             trending: [],
+             trending: product_serializer_helper(@trending),
+             products: product_serializer_helper(@products),
+             recommended: product_serializer_helper(@recommend),
            }
   end
 
@@ -56,74 +59,23 @@ class ProductsController < ApplicationController
 
     query.downcase!
     @products = Product.includes(images_attachments: :blob).joins(:category)
-    .where.not(id: @exclude_ids)
-    .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{query}%", query)
-    .order(id: :desc)
-    .limit(10)
+      .where.not(id: @exclude_ids)
+      .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{query}%", query)
+      .order(id: :desc)
+      .limit(10)
+
+    current_customer.search_histories.new(body: query).save if customer_signed_in?
 
     render json: {
-      products: ActiveModelSerializers::SerializableResource.new(@products, each_serializer: ProductSerializer)
+      products: product_serializer_helper(@products),
     }
   end
 
   private
 
-  def set_exclude_ids
-    if customer_signed_in?
-      cart_products = CartItem.joins(:cart).where(cart: { customer_id: current_customer.id }).pluck(:product_id)
-      order_products = OrderItem.joins(:order).where(order: { customer_id: current_customer.id }).pluck(:product_id)
-      @exclude_ids = cart_products + order_products
-    else
-      @exclude_ids = []
-    end
-  end
-
-  def render_show_with_comment
-    expires_in 1.days, public: true
-
-    render json: {
-      product: ProductDetailSerializer.new(@product),
-      related_products: ActiveModelSerializers::SerializableResource.new(@related, each_serializer: ProductSerializer),
-      comments: ActiveModelSerializers::SerializableResource.new(@product.comments.limit(4), each_serializer: CommentSerializer),
-    }
-  end
-
-  def render_show
-    render json: {
-      product: ActiveModelSerializers::SerializableResource.new(@product, each_serializer: ProductSerializer),
-      related_products: ActiveModelSerializers::SerializableResource.new(@related, each_serializer: ProductSerializer),
-    }
-  end
-
-  # GET /recommend
-  def recommend
-    if customer_signed_in?
-      # based on search history
-      for_signed_in_customer
-    else
-      for_guest
-    end
-  end
-
-  # 5 products are enough
-  def trending
-    @trending = []
-  end
-
-  # list of products
-  def list_of_products
-
-    if @category == "All"
-      @products = Product.get_list_but_exclude(@exclude_ids).to_a
-    else
-      category = Category.find_by(name: @category)
-      @products = Product.with_category(category, @exclude_ids).to_a
-    end
-
-    @products.delete_at(-1) if @products.size.odd?
-  end
-
   def set_category
     @category = params[:category]&.titlecase ||= "All"
   end
+
+  include ProductsConcern
 end

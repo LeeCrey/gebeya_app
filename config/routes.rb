@@ -21,24 +21,29 @@ Rails.application.routes.draw do
              }
   ActiveAdmin.routes(self)
 
+  # Products
   resources :products, only: %i[index show] do
     resources :votes, shallow: true, only: %i[create update destroy]
     resources :comments, shallow: true, only: %i[index create]
   end
   get "categories" => "products#categories"
-  # get "recommended" => "products#recommend"
   get "search" => "products#search"
+  delete "search_histories" => "profile#search_history"
 
+  # Carts
   resources :carts, only: %i[index destroy] do
     resources :cart_items, shallow: true, except: %i[new edit create show]
     resources :orders, only: %[create]
   end
   delete "carts" => "carts#clear" # delete all carts
-
   resources :cart_items, only: %[create]
+
+  # Orders
   resources :orders, only: %i[index show]
 
   # CUSTOMER
   post "feedbacks" => "feedback#create"
   get "customer" => "profile#show"
+
+  match "*unmatched", to: "application#not_found_method", via: :all
 end
