@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     lkl = params[:locale]
-    lkl = :en if lkl.nil? or lkl.empty? or lkl&.downcase.equal? "english"
+    lkl = :en if lkl.nil? or lkl.empty?
 
     I18n.locale = lkl
   end

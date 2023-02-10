@@ -1476,6 +1476,9 @@ GEM
     case_transform (0.2)
       activesupport
     concurrent-ruby (1.2.0)
+    counter_culture (3.3.0)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     crass (1.0.6)
     date (3.3.3)
     debug (1.7.1)
@@ -1699,6 +1702,7 @@ DEPENDENCIES
   bootsnap
   bullet
   capybara
+  counter_culture (~> 3.2)
   debug
   devise
   devise-jwt

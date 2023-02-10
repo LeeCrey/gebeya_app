@@ -4,10 +4,14 @@ ActiveAdmin.setup do |config|
     config.batch_actions = false
   end
 
-  config.namespace :shop do |shop|
-    shop.download_links = [:pdf]
-    shop.batch_actions = false
-  end
+  # config.namespace :shop do |shop|
+  #   shop.download_links = [:pdf]
+  #   shop.batch_actions = false
+
+  #   shop.build_menu :default do |menu|
+  #     menu.add label: "edit_profile"
+  #   end
+  # end
 
   # == Site Title
   #
@@ -40,7 +44,7 @@ ActiveAdmin.setup do |config|
   # will namespace routes to /hello_world/*
   #
   # To set no namespace by default, use:
-  #   config.default_namespace = false
+  # config.default_namespace = false
   #
   # Default:
   # config.default_namespace = :admin
@@ -240,12 +244,6 @@ ActiveAdmin.setup do |config|
   #
   # To change the default utility navigation to show a link to your website & a logout btn
   #
-  config.namespace :shops do |admin|
-    admin.build_menu :utility_navigation do |menu|
-      menu.add label: "Edit profile", url: "http://www.mygreatwebsite.com", html_options: { target: :blank }
-      admin.add_logout_button_to_menu menu
-    end
-  end
   #
   # If you wanted to add a static menu item to the default menu provided:
   #
@@ -286,7 +284,9 @@ ActiveAdmin.setup do |config|
   # You can control the max per page count too.
   #
   # config.max_per_page = 10_000
+  config.site_title_image = "http://www.online-gebeya.com/wp-content/uploads/2016/07/Logo.png"
 
+  #
   # == Filters
   #
   # By default the index screen includes a "Filters" sidebar on the right

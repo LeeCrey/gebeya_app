@@ -3,9 +3,10 @@
 ActiveAdmin.register AdminUser, as: "Shops" do
   menu if: proc { current_admin_user.admin? || current_admin_user.super_admin? }
 
-  actions :all, except: %i[new create edit update]
+  # actions :all, except: %i[new create delete]
+  actions :all, except: %i[new]
 
-  # permit_params :email, :password, :password_confirmation
+  permit_params :email, :password, :password_confirmation
 
   # Filters
   filter :email
@@ -22,7 +23,9 @@ ActiveAdmin.register AdminUser, as: "Shops" do
     column :created_at
     column :current_sign_in_ip
     column :last_sign_in_ip
-    actions
+    actions defaults: false do |user|
+      link_to "View", admin_shop_path(user)
+    end
   end
 
   # Update in future
@@ -30,6 +33,7 @@ ActiveAdmin.register AdminUser, as: "Shops" do
     attributes_table do
       row :shop_name
       row :email
+      row :admin
       row :created_at
       row :updated_at
     end
@@ -37,10 +41,10 @@ ActiveAdmin.register AdminUser, as: "Shops" do
 
   form do |f|
     f.inputs do
+      f.input :shop_name
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :admin
     end
     f.actions
   end
@@ -51,6 +55,14 @@ ActiveAdmin.register AdminUser, as: "Shops" do
 
     def show
       @page_title = "Shops"
+    end
+
+    # def edit
+    #   @admin_user = AdminUser.find(params[:id])
+    # end
+
+    def find_resource
+      AdminUser.where(id: params[:id]).first!
     end
 
     private

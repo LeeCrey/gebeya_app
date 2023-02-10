@@ -4,6 +4,8 @@ class Product < ApplicationRecord
   belongs_to :category
   belongs_to :admin_user
 
+  counter_culture :admin_user
+
   with_options dependent: :destroy do
     has_many_attached :images
     has_many :comments, class_name: "ProductComment"

@@ -7,6 +7,8 @@ class Order < ApplicationRecord
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
 
+  counter_culture :admin_user
+
   #
   enum :status, {
     saved: 0,

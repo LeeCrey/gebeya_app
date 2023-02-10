@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Product, namespace: "shops" do
+  scope_to :current_admin_user, unless: -> { current_admin_user.admin? }
+
   menu if: proc { !(current_admin_user.admin? || current_admin_user.super_admin?) }, priority: 1
 
   permit_params :locale, :name, :description, :origin, :price, :discount, :quantity, :shop_id, :category_id, images: []
@@ -95,48 +97,48 @@ ActiveAdmin.register Product, namespace: "shops" do
   end
 
   # Controller
-  controller do
-    rescue_from ActiveRecord::RecordNotFound, with: -> { return_to_list }
+  # controller do
+  #   rescue_from ActiveRecord::RecordNotFound, with: -> { return_to_list }
 
-    def show
-      @product = Product.includes(:category, images_attachments: :blob).where(id: params[:id]).references(:category, images_attachments: :blob)&.first
+  #   def show
+  #     @product = Product.includes(:category, images_attachments: :blob).where(id: params[:id]).references(:category, images_attachments: :blob)&.first
 
-      return_to_list and return if @product.admin_user_id != current_admin_user.id
-    end
+  #     return_to_list and return if @product.admin_user_id != current_admin_user.id
+  #   end
 
-    # EDIT
-    def edit
-      redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
-    end
+  #   # EDIT
+  #   def edit
+  #     redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
+  #   end
 
-    def update
-      redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
-    end
+  #   def update
+  #     redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
+  #   end
 
-    # create
-    def create
-      @product = current_admin_user.products.new(permitted_params[:product])
-      if @product.save
-        redirect_to shops_product_url(@product)
-      else
-        resource = @product
-        render :new
-      end
-    end
+  #   # create
+  #   def create
+  #     @product = current_admin_user.products.new(permitted_params[:product])
+  #     if @product.save
+  #       redirect_to shops_product_url(@product)
+  #     else
+  #       resource = @product
+  #       render :new
+  #     end
+  #   end
 
-    # delete
-    def delete
-      redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
-    end
+  #   # delete
+  #   def delete
+  #     redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
+  #   end
 
-    private
+  #   private
 
-    def return_to_list
-      redirect_to shops_products_path
-    end
+  #   def return_to_list
+  #     redirect_to shops_products_path
+  #   end
 
-    def scoped_collection
-      end_of_association_chain.where(admin_user_id: current_admin_user.id)
-    end
-  end
+  #   def scoped_collection
+  #     end_of_association_chain.where(admin_user_id: current_admin_user.id)
+  #   end
+  # end
 end
