@@ -5,7 +5,7 @@ class Order < ApplicationRecord
   belongs_to :admin_user
 
   has_many :order_items, dependent: :destroy
-  has_many :products, through: :order_items
+  # has_many :products, through: :order_items
 
   counter_culture :admin_user
 

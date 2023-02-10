@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_10_171145) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_10_183502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -222,7 +222,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_171145) do
   add_foreign_key "carts", "customers"
   add_foreign_key "feedbacks", "customers"
   add_foreign_key "order_items", "orders"
-  add_foreign_key "order_items", "products"
+  add_foreign_key "order_items", "products", on_delete: :cascade
   add_foreign_key "orders", "admin_users"
   add_foreign_key "orders", "customers"
   add_foreign_key "product_comments", "customers"
@@ -246,4 +246,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_171145) do
       ) * 7926.3352 AS distance;
       $function$
   SQL
+
 end

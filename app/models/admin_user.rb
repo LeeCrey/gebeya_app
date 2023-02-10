@@ -7,9 +7,9 @@ class AdminUser < ApplicationRecord
          :confirmable, :lockable, :registerable
 
   # R/N
-  has_many :products, dependent: :destroy_async
-  has_many :carts, dependent: :destroy_async
-  has_many :orders
+  has_many :products, dependent: :destroy
+  has_many :carts, dependent: :destroy
+  has_many :orders, dependent: :destroy
 
   # Validations
   validates :shop_name, presence: true, if: -> { shop? }

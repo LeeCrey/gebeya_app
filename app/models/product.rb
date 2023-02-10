@@ -8,6 +8,7 @@ class Product < ApplicationRecord
 
   with_options dependent: :destroy do
     has_many_attached :images
+    has_many :order_items
     has_many :comments, class_name: "ProductComment"
   end
 
