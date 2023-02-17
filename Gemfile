@@ -55,4 +55,4 @@ group :test do
   gem "webdrivers"
 end
 
-gem "figaro", "~> 1.2"
+# gem "figaro", "~> 1.2"
