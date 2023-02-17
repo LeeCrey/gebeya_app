@@ -20,19 +20,22 @@ class ProductsController < ApplicationController
   # GET /products/1 or /products/1.json
   def show
     @product = Product.includes(images_attachments: :blob).where(id: params[:id]).references(:images_attachments).first
-    @related = Product.includes(images_attachments: :blob)
-      .where(category_id: @product.category_id)
-      .where.not(id: (@exclude_ids << @product.id))
-      .references(:images_attachments)
-      .random_records(6)
+    # if stale? @prdouct
+      @related = Product.includes(images_attachments: :blob)
+        .where(category_id: @product.category_id)
+        .where.not(id: (@exclude_ids << @product.id))
+        .references(:images_attachments)
+        .last(6)
+        # .random_records(6)
 
-    lst = @related.last
+      lst = @related.last
 
-    if lst
-      render_show_with_comment if stale? [@product, lst]
-    else
-      render_show_with_comment if stale? [@product]
-    end
+      if lst
+        render_show_with_comment if stale? [@product, lst]
+      else
+        render_show_with_comment if stale? [@product]
+      end
+    # end
   end
 
   # GET /categories
@@ -48,23 +51,23 @@ class ProductsController < ApplicationController
 
   # GET /product/search
   def search
-    query = params[:q]
+    query = params[:q]&.strip
     if query.nil? or query.empty?
       render json: { okay: false, message: "Query is required" }, status: :bad_request and return # to prevent double render
     end
 
     query.downcase!
-    @products = Product.includes(images_attachments: :blob).joins(:category)
+    products = Product.includes(images_attachments: :blob).joins(:category)
       .where.not(id: @exclude_ids)
       .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{query}%", query)
       .order(id: :desc)
-      .limit(10)
+      .limit(10)&.to_a
 
     current_customer.search_histories.new(body: query).save if customer_signed_in?
 
-    render json: {
-      products: product_serializer_helper(@products),
-    }
+    products.pop if products.count.odd?
+
+    render json: { products: product_serializer_helper(products) }
   end
 
   private

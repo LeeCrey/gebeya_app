@@ -17,6 +17,10 @@ ActiveAdmin.register_page "Dashboard" do
       strong { link_to "View all shops", admin_shops_path }
     end
 
+    # columns do
+    #   line_chart Customer.group_by_day(:created_at).count
+    # end
+
     columns do
       column do
         panel "Recent Feedbacks" do

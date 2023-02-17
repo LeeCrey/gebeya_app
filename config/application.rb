@@ -19,6 +19,6 @@ module RubyRailsPostgres
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.hosts << "gebeya.up.railway.app"
-    # config.hosts << "6a4ee9fb963ce38119b1dd9b8b1f5bad.loophole.site"
+    # config.hosts << "gebeya.loca.lt"
   end
 end

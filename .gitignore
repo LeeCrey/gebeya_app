@@ -31,5 +31,6 @@
 /config/master.key
 
 en-vars.txt
+/config/application.yml
 
 .onboardbase.yaml

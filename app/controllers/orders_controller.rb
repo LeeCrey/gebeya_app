@@ -8,9 +8,11 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: %i[create]
 
   def index
-    @orders = current_customer.orders.includes(:admin_user).limit(10)
+    if stale? current_customer
+      @orders = current_customer.orders.includes(:admin_user).limit(10)
 
-    render json: @orders
+      render json: @orders
+    end
   end
 
   def show

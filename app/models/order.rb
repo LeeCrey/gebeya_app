@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
-  belongs_to :customer
+  belongs_to :customer, touch: true # update last updated at
   belongs_to :admin_user
 
   has_many :order_items, dependent: :destroy
@@ -11,11 +11,10 @@ class Order < ApplicationRecord
 
   #
   enum :status, {
-    saved: 0,
-    pending: 1,
-    canceled: 2,
-    paid: 3,
-    done: 4,
+    pending: 0,
+    canceled: 1,
+    paid: 2,
+    done: 3,
   }
 
   # Scopes
