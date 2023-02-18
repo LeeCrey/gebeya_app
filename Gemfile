@@ -20,7 +20,6 @@ gem "devise-jwt"
 gem "active_storage_validations"
 gem "active_model_serializers", "~> 0.10.13"
 gem "activeadmin"
-# gem "ransack"
 gem "acts_as_votable"
 gem "fx", "~> 0.7.0"
 gem "quick_random_records"
@@ -40,7 +39,7 @@ gem "sassc-rails"
 gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  gem "debug", platforms: %i[mri mingw x64_mingw]
+  # gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "bullet"
 end
 
@@ -55,4 +54,7 @@ group :test do
   gem "webdrivers"
 end
 
-# gem "figaro", "~> 1.2"
+group :local_dev do
+  gem "figaro", "~> 1.2"
+end
+
