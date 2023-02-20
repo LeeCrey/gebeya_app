@@ -1482,7 +1482,6 @@ GEM
       activesupport (>= 4.2)
     crass (1.0.6)
     date (3.3.3)
-    debug (1.7.1)
     devise (4.9.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -1702,7 +1701,6 @@ DEPENDENCIES
   capybara
   chartkick
   counter_culture (~> 3.2)
-  debug
   devise
   devise-jwt
   figaro (~> 1.2)
