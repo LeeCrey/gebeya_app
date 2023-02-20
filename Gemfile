@@ -15,6 +15,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 
 gem "redis", "~> 4.0"
+gem "sidekiq", "~> 7.0"
 gem "devise"
 gem "devise-jwt"
 gem "active_storage_validations"
@@ -26,6 +27,7 @@ gem "quick_random_records"
 gem "counter_culture", "~> 3.2"
 gem "chartkick"
 gem "groupdate"
+gem 'sendgrid-actionmailer'
 
 gem "aws-sdk"
 

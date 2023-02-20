@@ -10,15 +10,6 @@ Rails.application.configure do
     Bullet.add_footer = true
   end
 
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = true
-    Bullet.bullet_logger = true
-    Bullet.console = true
-    Bullet.rails_logger = true
-    Bullet.add_footer = true
-  end
-
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -38,18 +29,13 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {
     host: "https://gebeya.up.railway.app",
   }
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :sendgrid_actionmailer
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
-  config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "https://gebeya.up.railway.app",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: ENV["GMAIL_USERNAME"],
-    password: ENV["GMAIL_PASSWORD"],
+  config.action_mailer.sendgrid_actionmailer_settings = {
+    api_key: ENV["SENDGRID_API_KEY"],
+    raise_delivery_errors: true
   }
 
   # Enable server timing
