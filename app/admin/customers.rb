@@ -3,6 +3,8 @@
 ActiveAdmin.register Customer do
   menu if: proc { current_admin_user.admin? || current_admin_user.super_admin? }
 
+  actions :all, except: %i[new create edit update]
+
   config.per_page = 15
 
   index do

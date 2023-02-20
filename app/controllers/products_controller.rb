@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
   respond_to :json
 
   # append_before_action :recommend, :trending, only: %i[index]
+  before_action :get_neareset_shops, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
   append_before_action :set_category, :set_trending, :list_of_products, :prepare_recommended, only: %[index]
 
@@ -21,20 +22,20 @@ class ProductsController < ApplicationController
   def show
     @product = Product.includes(images_attachments: :blob).where(id: params[:id]).references(:images_attachments).first
     # if stale? @prdouct
-      @related = Product.includes(images_attachments: :blob)
-        .where(category_id: @product.category_id)
-        .where.not(id: (@exclude_ids << @product.id))
-        .references(:images_attachments)
-        .last(6)
-        # .random_records(6)
+    @related = Product.includes(images_attachments: :blob)
+      .where(category_id: @product.category_id)
+      .where.not(id: (@exclude_ids << @product.id))
+      .references(:images_attachments)
+      .last(6)
+    # .random_records(6)
 
-      lst = @related.last
+    lst = @related.last
 
-      if lst
-        render_show_with_comment if stale? [@product, lst]
-      else
-        render_show_with_comment if stale? [@product]
-      end
+    if lst
+      render_show_with_comment if stale? [@product, lst]
+    else
+      render_show_with_comment if stale? [@product]
+    end
     # end
   end
 
@@ -74,6 +75,16 @@ class ProductsController < ApplicationController
 
   def set_category
     @category = params[:category]&.titlecase ||= "All"
+  end
+
+  def get_neareset_shops
+    lat = params[:latitude]
+    lgt = params[:longitude]
+    if (lat.nil or lat.empty?) or (lgt.nil? or lgt.empty?)
+      render json: { okay: false, message: "Latitude and longitude are required" }, status: :bad_request and return
+    end
+
+    @shop_ids = AdminUser.nearest(lat, lgt).map(&:id)
   end
 
   include ProductsConcern

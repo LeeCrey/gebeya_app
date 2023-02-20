@@ -17,6 +17,5 @@ class ProductDetailSerializer < ActiveModel::Serializer
     object.votes_for.count
   end
 
-
   belongs_to :admin_user
 end

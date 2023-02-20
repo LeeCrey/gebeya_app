@@ -8,7 +8,7 @@ class CartsController < ApplicationController
 
   # GET  /cart
   def index
-    if stale? current_customer
+    if stale?(last_modified: current_customer.updated_at, public: true)
       @carts = current_customer.carts.includes(:admin_user).references(:admin_user)
 
       expires_in 1.day
@@ -26,7 +26,7 @@ class CartsController < ApplicationController
 
   # DELETE /cart
   def clear
-    Cart.includes(:cart_items).destroy_all
+    Cart.destroy_all
 
     head :no_content
   end

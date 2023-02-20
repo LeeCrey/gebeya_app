@@ -26,18 +26,24 @@ module ProductConcern
             where(admin_user_id: shop_id.id).order(id: :asc).limit(limit)
           end
     scope :list_get, ->(ids) do
-            includes(images_attachments: :blob).where.not(id: ids).references(:images_attachments).random_records(8)
+            includes(images_attachments: :blob).where.not(id: ids)
+              .references(:images_attachments)
+              .random_records(8)
           end
-    scope :with_category, ->(category, exclude_ids) do
+    scope :with_category, ->(category, exclude_ids, shop_ids) do
             includes(images_attachments: :blob)
               .where(category_id: category.id)
-              .where.not(id: exclude_ids).references(:images_attachments)
+              .where(admin_user_id: shop_ids)
+              .where.not(id: exclude_ids)
+              .references(:images_attachments)
               .random_records(8)
           end
 
-    scope :get_list_but_exclude, ->(ids) do
+    scope :get_list_but_exclude, ->(ids, shop_ids) do
             includes(images_attachments: :blob)
-              .where.not(id: ids).references(:images_attachments)
+              .where(admin_user_id: shop_ids)
+              .where.not(id: ids)
+              .references(:images_attachments)
               .limit(8)
             # .random_records(16)
           end

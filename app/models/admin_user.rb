@@ -7,9 +7,11 @@ class AdminUser < ApplicationRecord
          :confirmable, :lockable, :registerable
 
   # R/N
-  has_many :products, dependent: :destroy
-  has_many :carts, dependent: :destroy
-  has_many :orders, dependent: :destroy
+  with_options dependent: :destroy do
+    has_many :products
+    has_many :carts
+    has_many :orders
+  end
 
   # Validations
   validates :shop_name, presence: true, if: -> { shop? }
@@ -19,10 +21,10 @@ class AdminUser < ApplicationRecord
           where(admin: false).order(id: :desc).limit(limit)
         end
 
-  scope :nearest_with_location, ->(lat, long) {
+  scope :nearest, ->(lat, long) {
           find_by_sql("
-            SELECT id, floor(geodistance(latitude, longitude, #{lat}, #{long})) distance FROM admin_users
-            where(longitude is not null and latitude is not null and admin = false) order by distance asc limit 20")
+            SELECT id, geodistance(latitude, longitude, #{lat}, #{long}) * 1.609344 as distance FROM admin_users
+            WHERE(longitude IS NOT NULL AND latitude IS NOT NULL AND admin = false) ORDER BY distance ASC LIMIT 20")
         }
 
   def name

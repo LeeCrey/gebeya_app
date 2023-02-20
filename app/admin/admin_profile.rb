@@ -45,8 +45,19 @@ ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
 
     def index
       # super
-      redirect_to action: "edit"
-      # redirect_to edit_admin_shop_path(current_admin_user)
+      redirect_to admin_shop_url(current_admin_user)
+    end
+
+    def update
+      if current_admin_user.password == permitted_params[:current_password]
+        if current_admin_user.update(permitted_params.except(:current_password, :email))
+          flash[:notice] = "Profile has been updated successfully"
+          redirect_to admin_shop_url(current_admin_user)
+        end
+      else
+        flash[:notice] = "Current password is incorrect"
+        render action: "edit"
+      end
     end
 
     def return_to_list
@@ -58,12 +69,14 @@ ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
     end
 
     private
+
     def permitted_params
       hash = params.require(:admin_user).permit(
         :shop_name, :email, :current_password,
-        :password, :password_confirmation, :merchant_id, :longitude, :latitude)
-      
-      hash.reject { |k,v| v.empty? or v.nil? }
+        :password, :password_confirmation, :merchant_id, :longitude, :latitude
+      )
+
+      hash.reject { |k, v| v.empty? or v.nil? }
     end
   end
 end

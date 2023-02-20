@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION public.geodistance(
-  alat double precision,
-  alng double precision,
-  blat double precision,
+  alat double precision, 
+  alng double precision, 
+  blat double precision, 
   blng double precision)
   RETURNS double precision AS
 $BODY$

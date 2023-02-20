@@ -57,4 +57,3 @@ end
 group :local_dev do
   gem "figaro", "~> 1.2"
 end
-
