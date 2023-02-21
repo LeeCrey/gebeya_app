@@ -22,12 +22,13 @@ gem "active_storage_validations"
 gem "active_model_serializers", "~> 0.10.13"
 gem "activeadmin"
 gem "acts_as_votable"
-gem "fx", "~> 0.7.0"
 gem "quick_random_records"
 gem "counter_culture", "~> 3.2"
 gem "chartkick"
 gem "groupdate"
-gem 'sendgrid-actionmailer'
+
+gem "fx", "~> 0.7.0"
+gem "sendgrid-actionmailer"
 
 gem "aws-sdk"
 

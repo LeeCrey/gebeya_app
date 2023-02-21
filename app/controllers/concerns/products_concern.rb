@@ -4,11 +4,12 @@ module ProductsConcern
 
   # list of products
   def list_of_products
+    @offset = params[:offset].to_i * 8
     if @category == "All"
-      @products = Product.get_list_but_exclude(@exclude_ids, @shop_ids).to_a
+      @products = Product.get_list_but_exclude(@exclude_ids, @shop_ids, @offset).to_a
     else
       category = Category.find_by(name: @category)
-      @products = Product.with_category(category, @exclude_ids, @shop_ids).to_a
+      @products = Product.with_category(category, @exclude_ids, @shop_ids, @offset).to_a
     end
 
     @products.delete_at(-1) if @products.size.odd?
@@ -25,7 +26,7 @@ module ProductsConcern
           .random_records(6)
       end
     else
-      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products).random_records(6)
+      @recommend = Product.includes(images_attachments: :blob).order(id: :desc).where.not(id: @products).limit(8)
     end
   end
 

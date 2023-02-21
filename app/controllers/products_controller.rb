@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
   respond_to :json
 
   # append_before_action :recommend, :trending, only: %i[index]
+  before_action :set_offset, only: %[index search]
   before_action :get_neareset_shops, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
   append_before_action :set_category, :set_trending, :list_of_products, :prepare_recommended, only: %[index]
@@ -57,11 +58,14 @@ class ProductsController < ApplicationController
       render json: { okay: false, message: "Query is required" }, status: :bad_request and return # to prevent double render
     end
 
+    offset = params[:offset]&.to_i * 10
+
     query.downcase!
     products = Product.includes(images_attachments: :blob).joins(:category)
       .where.not(id: @exclude_ids)
       .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{query}%", query)
       .order(id: :desc)
+      .offset(offset)
       .limit(10)&.to_a
 
     current_customer.search_histories.new(body: query).save if customer_signed_in?
@@ -74,17 +78,23 @@ class ProductsController < ApplicationController
   private
 
   def set_category
-    @category = params[:category]&.titlecase ||= "All"
+    category = params[:category] ||= "All"
+    @category = category&.titlecase
   end
 
   def get_neareset_shops
     lat = params[:latitude]
     lgt = params[:longitude]
-    if (lat.nil or lat.empty?) or (lgt.nil? or lgt.empty?)
+
+    if (lat.nil? or lat.empty?) or (lgt.nil? or lgt.empty?)
       render json: { okay: false, message: "Latitude and longitude are required" }, status: :bad_request and return
     end
 
     @shop_ids = AdminUser.nearest(lat, lgt).map(&:id)
+  end
+
+  def set_offset
+    @offset = params[:offset].to_i
   end
 
   include ProductsConcern

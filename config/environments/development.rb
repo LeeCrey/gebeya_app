@@ -35,7 +35,7 @@ Rails.application.configure do
   config.action_mailer.default :charset => "utf-8"
   config.action_mailer.sendgrid_actionmailer_settings = {
     api_key: ENV["SENDGRID_API_KEY"],
-    raise_delivery_errors: true
+    raise_delivery_errors: true,
   }
 
   # Enable server timing
