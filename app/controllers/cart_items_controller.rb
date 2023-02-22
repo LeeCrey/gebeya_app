@@ -23,6 +23,17 @@ class CartItemsController < ApplicationController
 
   # PUT/PATCH  /cart_item/:id
   def update
+    quantity = params[:quantity].to_i
+    if quantity.zero?
+      render json: { okay: false, message: "Quantity can not be zero" }, status: :bad_request and return
+    end
+
+    @cart_item = CartItem.find(params[:id])
+    if @cart_item.update(quantity: quantity)
+      render json: { okay: true, message: "Cart updated successfully" }, status: :ok
+    else
+      render json: { okay: false, errors: @cart_item.errors }, status: :unprocessable_entity
+    end
   end
 
   # POST /cart_items

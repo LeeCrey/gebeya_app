@@ -2,7 +2,7 @@ class CartItemSerializer < ActiveModel::Serializer
   attributes :id, :quantity, :product, :item_image
 
   def product
-    object.product.slice(:name, :price, :discount)
+    object.product.slice(:name, :price, :discount, :quantity)
   end
 
   def item_image

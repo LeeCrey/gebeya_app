@@ -34,3 +34,4 @@ en-vars.txt
 /config/application.yml
 
 .onboardbase.yaml
+send.rb
