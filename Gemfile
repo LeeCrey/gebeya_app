@@ -43,11 +43,11 @@ gem "bootsnap", require: false
 
 group :development, :test do
   # gem "debug", platforms: %i[mri mingw x64_mingw]
-  gem "bullet"
+  # gem "bullet"
 end
 
 group :development do
-  gem "letter_opener"
+  # gem "letter_opener"
   gem "web-console"
 end
 

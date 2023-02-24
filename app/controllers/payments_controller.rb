@@ -20,7 +20,7 @@ class PaymentsController < ApplicationController
       if total > customer.balance
         render json: { okay: false, message: I18n.t("payment.insuffient") }, status: :unprocessable_entity
       else
-        do_transaction(customer)
+        do_transaction(customer, total)
 
         render json: { okay: true, message: I18n.t("payment.success") }, status: :created
       end
@@ -30,10 +30,10 @@ class PaymentsController < ApplicationController
   private
 
   def set_order
-    @order = Order.find!(params[:order_id])
+    @order = Order.find(params[:order_id])
   end
 
-  def do_transaction(customer)
+  def do_transaction(customer, total)
     ActiveRecord::Base.transaction do
       customer.balance -= total # withdraw
       admin_user = @order.admin_user

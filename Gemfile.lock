@@ -1465,9 +1465,6 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
-    bullet (7.0.7)
-      activesupport (>= 3.0.0)
-      uniform_notifier (~> 1.11)
     capybara (3.38.0)
       addressable
       matrix
@@ -1551,10 +1548,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    launchy (2.5.2)
-      addressable (~> 2.8)
-    letter_opener (1.8.1)
-      launchy (>= 2.2, < 3)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -1675,7 +1668,6 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uniform_notifier (1.16.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     warden-jwt_auth (0.8.0)
@@ -1710,7 +1702,6 @@ DEPENDENCIES
   acts_as_votable
   aws-sdk
   bootsnap
-  bullet
   capybara
   counter_culture (~> 3.2)
   devise
@@ -1719,7 +1710,6 @@ DEPENDENCIES
   fx (~> 0.7.0)
   image_processing (~> 1.2)
   importmap-rails
-  letter_opener
   pg (~> 1.4)
   puma (~> 5.0)
   rails (~> 7.0.4)

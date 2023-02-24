@@ -12,9 +12,9 @@ ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
       row :updated_at
       row :products_count
       row :orders_count
-      row :merchant_id
       row :longitude
       row :latitude
+      row :balance
 
       row "view location" do |shop|
         if shop.latitude && shop.longitude
@@ -29,11 +29,10 @@ ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
   form do |f|
     f.inputs do
       f.input :shop_name
-      f.input :email
+      # f.input :email
       f.input :password
       f.input :password_confirmation
       f.input :current_password
-      f.input :merchant_id
       f.input :longitude
       f.input :latitude
     end
@@ -48,17 +47,17 @@ ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
       redirect_to admin_shop_url(current_admin_user)
     end
 
-    def update
-      if current_admin_user.password == permitted_params[:current_password]
-        if current_admin_user.update(permitted_params.except(:current_password, :email))
-          flash[:notice] = "Profile has been updated successfully"
-          redirect_to admin_shop_url(current_admin_user)
-        end
-      else
-        flash[:notice] = "Current password is incorrect"
-        render action: "edit"
-      end
-    end
+    # def update
+    #   if current_admin_user.password == permitted_params[:current_password]
+    #     if current_admin_user.update(permitted_params.except(:current_password, :email))
+    #       flash[:notice] = "Profile has been updated successfully"
+    #       redirect_to admin_shop_url(current_admin_user)
+    #     end
+    #   else
+    #     flash[:notice] = "Current password is incorrect"
+    #     render action: "edit"
+    #   end
+    # end
 
     def return_to_list
       redirect_to admin_root_path
