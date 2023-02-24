@@ -4,9 +4,7 @@ class Order < ApplicationRecord
   belongs_to :customer, touch: true # update last updated at
   belongs_to :admin_user
 
-  has_many :order_items, dependent: :destroy
-  # has_many :products, through: :order_items
-
+  has_many :items, class_name: "OrderItem", dependent: :destroy
   counter_culture :admin_user
 
   #
