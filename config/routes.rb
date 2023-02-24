@@ -39,7 +39,9 @@ Rails.application.routes.draw do
   resources :cart_items, only: %[create]
 
   # Orders
-  resources :orders, only: %i[index show]
+  resources :orders, only: %i[index show] do
+    resources :payments, only: %[create]
+  end
 
   # CUSTOMER
   post "feedbacks" => "feedback#create"

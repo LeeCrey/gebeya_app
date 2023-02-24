@@ -5,6 +5,7 @@ class CreateCustomers < ActiveRecord::Migration[7.0]
       t.string :last_name, null: false
       t.float :longitude
       t.float :latitude
+      t.decimal :balance, null: false, default: 0.0
 
       t.timestamps
     end
