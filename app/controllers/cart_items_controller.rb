@@ -13,7 +13,7 @@ class CartItemsController < ApplicationController
     # n + 1 query optimize for product image
 
     if stale? @cart
-      @items = CartItem.includes(:cart, :product).where(cart: { id: @cart.id })
+      @items = @cart.items.includes(:product)
 
       expires_in 1.day
 

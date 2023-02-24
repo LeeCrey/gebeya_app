@@ -6,3 +6,8 @@ en:
   cart:
     added: Successfully added to cart
     exist: Product already exist
+
+  payment:
+    success: Payment successfull
+    insuffient: Your balance is insufficient
+    paid: Order was paid before

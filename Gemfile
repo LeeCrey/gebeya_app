@@ -6,31 +6,34 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.1"
 
 gem "rails", "~> 7.0.4"
-gem "sprockets-rails"
 gem "puma", "~> 5.0"
 gem "pg", "~> 1.4"
 
+gem "sprockets-rails"
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
+gem "sassc-rails"
+
+gem "active_storage_validations"
+gem "active_model_serializers", "~> 0.10.13"
+gem "counter_culture", "~> 3.2"
 
 gem "redis", "~> 4.0"
 gem "sidekiq", "~> 7.0"
 gem "devise"
 gem "devise-jwt"
-gem "active_storage_validations"
-gem "active_model_serializers", "~> 0.10.13"
+
 gem "activeadmin"
 gem "acts_as_votable"
-gem "quick_random_records"
-gem "counter_culture", "~> 3.2"
-gem "chartkick"
-gem "groupdate"
-
-gem "fx", "~> 0.7.0"
-gem "sendgrid-actionmailer"
+gem "image_processing", "~> 1.2"
+# gem "quick_random_records"
+# gem "chartkick"
+# gem "groupdate"
 
 gem "aws-sdk"
+gem "fx", "~> 0.7.0"
+gem "sendgrid-actionmailer"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
@@ -38,16 +41,13 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-gem "sassc-rails"
-gem "image_processing", "~> 1.2"
-
 group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "bullet"
 end
 
 group :development do
-  gem "letter_opener", "~> 1.8", ">= 1.8.1"
+  gem "letter_opener"
   gem "web-console"
 end
 

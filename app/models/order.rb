@@ -10,10 +10,8 @@ class Order < ApplicationRecord
   #
   enum :status, {
     pending: 0,
-    canceled: 1,
-    paid: 2,
-    done: 3,
-  }
+    paid: 1,
+  }, default: :pending
 
   # Scopes
   scope :paid, ->(shop_id) {
