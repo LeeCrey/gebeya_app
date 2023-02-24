@@ -4,5 +4,4 @@ class CustomerTest < ActiveSupport::TestCase
   setup do
     @first = Customer(:first)
   end
-
 end

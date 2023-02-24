@@ -23,10 +23,6 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  # Custom
-  config.hosts << "gebeya.up.railway.app"
-  config.hosts << "gebeya.loca.lt"
-
   routes.default_url_options[:host] = "https://gebeya.up.railway.app"
   # config.action_mailer.delivery_method = :letter_opener
   # Enable server timing
@@ -50,9 +46,6 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :amazon
-
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -84,6 +77,9 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # MAILER
+  # Custom
+  config.hosts << "gebeya.up.railway.app"
+
   config.action_mailer.default_url_options = { host: routes.default_url_options[:host] }
   config.action_mailer.delivery_method = :sendgrid_actionmailer
   config.action_mailer.raise_delivery_errors = false
