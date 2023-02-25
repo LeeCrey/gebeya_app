@@ -27,7 +27,7 @@ class Customers::PasswordsController < Devise::PasswordsController
     respond_to do |format|
       if changed
         flash[:notice] = I18n.t("devise.passwords.updated_not_active")
-        format.html { redirect_to root_url, notice: flash[:notice] }
+        format.html { redirect_to new_customer_password_path, notice: flash[:notice] }
         format.json { render json: { okay: true, message: flash[:notice] }, status: :created }
       else
         flash[:alert] = resource.errors
@@ -35,6 +35,9 @@ class Customers::PasswordsController < Devise::PasswordsController
         format.json { render json: { okay: false, message: flash[:alert] }, status: :unprocessable_entity }
       end
     end
+  end
+
+  def pwd_changed
   end
 
   private

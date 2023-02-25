@@ -41,7 +41,7 @@ class CartItemsController < ApplicationController
     @product = Product.find(params[:product_id])
     shop_id = @product.admin_user_id
     @cart = current_customer.carts.find_or_create_by(admin_user_id: shop_id)
-    @item = @cart.cart_items.new(product_id: @product.id)
+    @item = @cart.items.new(product_id: @product.id)
     @item.quantity = params[:quantity].to_i
 
     if @item.save

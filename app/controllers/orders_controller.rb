@@ -8,23 +8,22 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: %i[create]
 
   def index
-    if stale? current_customer
+    if stale? @orders
       @orders = current_customer.orders.includes(:admin_user).limit(10)
 
       render json: @orders
     end
   end
 
-  def show
-  end
-
   # POST /carts/:cart_id/order
   def create
-    @order = current_customer.orders.find_or_create_by(admin_user_id: @cart.admin_user_id)
+    @order = current_customer.orders.new(admin_user_id: @cart.admin_user_id)
+    @order.save
     array = []
-    @cart.cart_items.each do |item|
+    @cart.items.each do |item|
       array << { order_id: @order.id, product_id: item.product_id, quantity: item.quantity }
     end
+    # @order.items << array
     OrderItem.upsert_all(array)
 
     @cart.destroy

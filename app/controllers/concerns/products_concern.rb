@@ -25,7 +25,6 @@ module ProductsConcern
         @recommend = Product.includes(images_attachments: :blob).joins(:category).where.not(id: @exclude_ids)
           .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{history}%", history)
           .order(id: :desc).limit(6)
-          # .random_records(6)
       else
         @recommend = []
       end

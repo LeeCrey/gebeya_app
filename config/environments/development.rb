@@ -23,7 +23,9 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  routes.default_url_options[:host] = "https://gebeya.up.railway.app"
+  # routes.default_url_options[:host] = "https://gebeya.up.railway.app"
+  routes.default_url_options[:host] = "https://gebeya.loca.lt"
+
   # config.action_mailer.delivery_method = :letter_opener
   # Enable server timing
   config.server_timing = true

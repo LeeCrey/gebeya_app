@@ -11,7 +11,7 @@ class OrderItemsController < ApplicationController
     @order = Order.find(params[:order_id])
 
     if stale? @order
-      @items = @order.items.includes(:product)
+      @items = @order.items.includes(product: { images_attachments: :blob }).references(:images_attachments)
 
       expires_in 1.day
 
