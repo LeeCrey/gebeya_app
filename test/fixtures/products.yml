@@ -1,0 +1,5 @@
+samsung:
+  name: SAMSUNG S23
+  price: 10_000.0
+  category: phone
+  admin_user: dave

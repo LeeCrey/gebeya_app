@@ -8,9 +8,9 @@ class CartsController < ApplicationController
 
   # GET  /cart
   def index
-    if stale?(last_modified: current_customer.updated_at, public: true)
-      @carts = current_customer.carts.includes(:admin_user).references(:admin_user)
+    @carts = current_customer.carts.includes(:admin_user)
 
+    if stale? @carts
       expires_in 1.day
 
       carts_json = ActiveModelSerializers::SerializableResource.new(@carts, each_serializer: CartSerializer)

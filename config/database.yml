@@ -7,12 +7,14 @@ development:
   <<: *default
   url: <%= ENV["DATABASE_URL"] %>
 
-# test:
-#   <<: *default
-#   username: <%= ENV["DB_UNAME"] %>
-#   password: <%= ENV["DB_PWD"] %>
-#   # Please don't use ENV["DATABASE_URL"] here. When you run test, it will create your database..
-#   database: gebeya_test_db
+test:
+  <<: *default
+  username: <%= ENV["DB_UNAME"] %>
+  password: <%= ENV["DB_PWD"] %>
+  database: gebeya_test_db
+  # Please don't use ENV["DATABASE_URL"] here. When you run test, it'll truncate your database..
+  # database: gebeya_test_db
+  # url: <%= ENV["TEST_DB"] %>
 
 production:
   <<: *default

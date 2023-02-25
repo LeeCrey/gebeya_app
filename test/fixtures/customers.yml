@@ -1,4 +1,5 @@
-first:
+one:
   first_name: Lee
   last_name: Crey
   email: lee_crey@gmail.com
+  encrypted_password: $2a$12$XcWPtCATKNR9zKqTFLcFD.aHJii7xBsXk5mBEJ.3mCzaRLmYZaZ82

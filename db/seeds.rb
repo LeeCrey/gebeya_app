@@ -1,3 +1,3 @@
 json = JSON.parse(File.read("db/categories.json"))
 
-Category.create(json)
+Category.upsert_all(json)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
-  belongs_to :customer, touch: true # update last updated at
+  belongs_to :customer
   belongs_to :admin_user
 
   has_many :items, class_name: "OrderItem", dependent: :destroy

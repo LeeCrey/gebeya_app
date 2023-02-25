@@ -26,7 +26,8 @@ class OrdersController < ApplicationController
     # @order.items << array
     OrderItem.upsert_all(array)
 
-    @cart.destroy
+    CartItem.destroy_all(cart_id: @cart.id)
+    @cart.destroy!
 
     render json: { okay: true, message: "Order created" }, status: :created
   end

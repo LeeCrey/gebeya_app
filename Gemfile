@@ -31,7 +31,8 @@ gem "image_processing", "~> 1.2"
 # gem "chartkick"
 # gem "groupdate"
 
-gem "aws-sdk"
+# gem "aws-sdk"
+gem "aws-sdk-s3", require: false
 gem "fx", "~> 0.7.0"
 gem "sendgrid-actionmailer"
 
@@ -44,19 +45,18 @@ gem "bootsnap", require: false
 group :development, :test do
   # gem "debug", platforms: %i[mri mingw x64_mingw]
   # gem "bullet"
+  # gem "figaro", "~> 1.2"
 end
 
 group :development do
-  # gem "letter_opener"
   gem "web-console"
 end
 
 group :test do
+  gem "letter_opener"
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
-end
-
-group :local_dev do
-  gem "figaro", "~> 1.2"
+  gem "database_cleaner-active_record"
+  gem "database_cleaner"
 end
