@@ -5,10 +5,10 @@ class ProductsController < ApplicationController
   respond_to :json
 
   # append_before_action :recommend, :trending, only: %i[index]
-  before_action :set_offset, only: %[index search]
+  before_action :set_offset, only: %i[index search]
   before_action :get_neareset_shops, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
-  append_before_action :set_category, :set_trending, :list_of_products, :prepare_recommended, only: %[index]
+  append_before_action :set_category, :set_trending, :list_of_products, :prepare_recommended, only: %i[index]
 
   # GET /products or /products.json
   def index
