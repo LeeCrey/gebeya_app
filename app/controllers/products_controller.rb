@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
-    @product = Product.includes(images_attachments: :blob).where(id: params[:id]).references(:images_attachments).first
+    @product = Product.includes(images_attachments: :blob).where(id: params[:id]).first
     # if stale? @prdouct
     @related = Product.includes(images_attachments: :blob)
       .where(category_id: @product.category_id)
@@ -61,12 +61,10 @@ class ProductsController < ApplicationController
     offset = params[:offset]&.to_i * 10
 
     query.downcase!
-    products = Product.includes(images_attachments: :blob).joins(:category)
+    products = Product.joins(:category).includes(:category, images_attachments: :blob)
       .where.not(id: @exclude_ids)
       .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{query}%", query)
-      .order(id: :desc)
-      .offset(offset)
-      .limit(10)&.to_a
+      .order(id: :desc).offset(offset).limit(10)&.to_a
 
     current_customer.search_histories.new(body: query).save if customer_signed_in?
 

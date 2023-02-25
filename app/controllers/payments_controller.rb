@@ -15,7 +15,8 @@ class PaymentsController < ApplicationController
       render json: { okay: false, message: I18n.t("payment.paid") }, status: :unprocessable_entity
     else
       customer = current_customer
-      total = @order.items.includes(:product).sum("order_items.quantity * products.price")
+      total = @order.items.includes(:product).sum("order_items.quantity * CASE WHEN products.discount IS NULL THEN 
+        products.price ELSE products.price - products.discount END")
       balance = customer.balance
       if total > customer.balance
         render json: { okay: false, message: I18n.t("payment.insuffient") }, status: :unprocessable_entity

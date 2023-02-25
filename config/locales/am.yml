@@ -1,3 +1,13 @@
 am:
+  unlock_token: Token is expired
   custom_error:
-    login: "Incorrect email or password."
+    login: የተሳሳተ ኢሜይል ወይም የይለፍ ቃል
+
+  cart:
+    added: በተሳካ ሁኔታ ወደ ጋሪ ተጨመረ
+    exist: ምርት ቀድሞውኑ አለ
+
+  payment:
+    success: ሂሳቡ በተሳካ ሁነታ ተከፍሏል
+    insuffient: ያልዎት ቀሪ ሂሳብ አነስተኛ ነዉ
+    paid: ትዕዛዙ ከዚህ በፊት ተከፍሎ ነበር
