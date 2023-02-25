@@ -40,7 +40,6 @@ class Customers::PasswordsController < Devise::PasswordsController
   private
 
   def respond_with(resource, _opts = {})
-    debugger
     if flash[:alert]
       render json: { okay: false, message: flash[:alert] }, status: :unprocessable_entity
     elsif flash[:notice]
