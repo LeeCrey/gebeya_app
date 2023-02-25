@@ -13,7 +13,9 @@ class CartsController < ApplicationController
 
       expires_in 1.day
 
-      render json: { carts: ActiveModelSerializers::SerializableResource.new(@carts, each_serializer: CartSerializer) }
+      carts_json = ActiveModelSerializers::SerializableResource.new(@carts, each_serializer: CartSerializer)
+
+      render json: { carts: carts_json }
     end
   end
 
