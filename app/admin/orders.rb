@@ -11,16 +11,12 @@ ActiveAdmin.register Order, namespace: "shops" do
   includes([:customer])
 
   # # Scopes
-  scope "Saved", group: :status do |orders|
-    orders.where(status: :saved)
+  scope "Pending", group: :status do |orders|
+    orders.pending
   end
 
   scope "Paid", group: :status do |orders|
     orders.where(status: :paid)
-  end
-
-  scope "Cancelled", group: :status do |orders|
-    orders.where(status: :canceled)
   end
 
   # index page
