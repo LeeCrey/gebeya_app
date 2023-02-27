@@ -2,7 +2,9 @@
 
 ActiveAdmin.register OrderItem, namespace: "shops" do
   config.filters = false
+
   menu false
+
   actions :all, except: %i[new edit update destroy]
 
   includes([:product])

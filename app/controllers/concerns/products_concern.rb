@@ -35,7 +35,7 @@ module ProductsConcern
 
   # 5 products are enough
   def set_trending
-    @trending = []
+    @trending = Product.includes(images_attachments: :blob).where(trending: true).order("random()").limit(6)
   end
 
   def set_exclude_ids

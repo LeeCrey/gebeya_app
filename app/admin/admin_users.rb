@@ -1,12 +1,20 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register AdminUser, as: "Shops" do
+ActiveAdmin.register AdminUser, as: "Shops", namespace: :admin do
   menu if: proc { current_admin_user.admin? || current_admin_user.super_admin? }
 
-  # actions :all, except: %i[new create delete]
-  actions :all, except: %i[new]
+  actions :all, except: %i[new edit edit update destroy]
 
   permit_params :email, :password, :password_confirmation
+
+  # Actions items
+  action_item :show, only: :show do
+    link_to 'Edit Account', edit_admin_user_registration_path
+  end
+  
+  action_item :show, only: :show do
+    link_to 'Delete Account', admin_user_registration_path, method: :delete, data: {confirm: "Are you sure?"}
+  end
 
   # Filters
   filter :email
@@ -31,7 +39,6 @@ ActiveAdmin.register AdminUser, as: "Shops" do
   # Update in future
   show do
     attributes_table do
-      row :shop_name
       row :email
       row :admin
       row :created_at

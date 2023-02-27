@@ -10,6 +10,7 @@ class Shops::RegistrationsController < ActiveAdmin::Devise::RegistrationsControl
 
   # Overriding
   def account_update_params
-    params.require(:admin_user).permit(:sho_name, :current_password, :password, :password_confirmation)
+    params.require(:admin_user).permit(:shop_name, :longitude, :latitude,
+                                       :current_password, :password, :password_confirmation)
   end
 end

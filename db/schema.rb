@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_24_155646) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_27_160310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -186,6 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_155646) do
     t.float "cached_weighted_average", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "trending"
     t.index ["admin_user_id"], name: "index_products_on_admin_user_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["name"], name: "index_products_on_name"
@@ -226,3 +227,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_155646) do
   add_foreign_key "order_items", "products", on_delete: :cascade
   add_foreign_key "orders", "admin_users"
   add_foreign_key "orders", "customers"
+  add_foreign_key "product_comments", "customers"
+  add_foreign_key "product_comments", "products"
+  add_foreign_key "products", "admin_users"
+  add_foreign_key "products", "categories"
+  add_foreign_key "search_histories", "customers"
+  create_function :geodistance, sql_definition: <<-'SQL'
+      CREATE OR REPLACE FUNCTION public.geodistance(alat double precision, alng double precision, blat double precision, blng double precision)
+       RETURNS double precision
+       LANGUAGE sql
+       IMMUTABLE
+      AS $function$
+      SELECT asin(
+        sqrt(
+          sin(radians($3-$1)/2)^2 +
+          sin(radians($4-$2)/2)^2 *
+          cos(radians($1)) *
+          cos(radians($3))
+        )
+      ) * 7926.3352 AS distance;
+      $function$
+  SQL
+
+end

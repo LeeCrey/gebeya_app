@@ -5,7 +5,7 @@ ActiveAdmin.register Product, namespace: "shops" do
 
   menu if: proc { !(current_admin_user.admin? || current_admin_user.super_admin?) }, priority: 1
 
-  permit_params :locale, :name, :description, :origin, :price, :discount, :quantity, :shop_id, :category_id, images: []
+  permit_params :locale, :name, :description, :origin, :price, :discount, :quantity, :shop_id, :category_id, :trending, images: []
 
   includes([:category])
 
@@ -18,6 +18,7 @@ ActiveAdmin.register Product, namespace: "shops" do
   filter :discount
   filter :quantity
   filter :category
+  filter :trending
 
   # index page
   index do
@@ -25,6 +26,7 @@ ActiveAdmin.register Product, namespace: "shops" do
     column :category
     column :name
     column :origin
+    column :trending
     column :price do |product|
       div class: "product-price" do
         number_to_currency(product.price, unit: "", delimiter: ",", separator: ",")
@@ -64,6 +66,7 @@ ActiveAdmin.register Product, namespace: "shops" do
       input :discount
       input :quantity
       input :description
+      input :trending
       input :images, as: :file, input_html: { multiple: true }
     end
     para "Press cancel to return to the list without saving."
@@ -80,6 +83,7 @@ ActiveAdmin.register Product, namespace: "shops" do
       row :quantity
       row :description
       row :discount
+      row :trending
       row :images do |product|
         div class: "slideshow-container" do
           if product.images.attached?

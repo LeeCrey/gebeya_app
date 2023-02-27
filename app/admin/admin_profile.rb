@@ -1,8 +1,19 @@
 # frozen_string_literal: true
-# Bad solution btw
 
-ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
+ActiveAdmin.register AdminUser, as: "Profile", namespace: :shops do
   menu false
+
+  permit_params :shop_name, :longitude, :latitude, :password, :password_confirmation
+
+  actions :all, except: %i[edit edit update destroy]
+
+  action_item :show, only: :show do
+    link_to 'Edit Account', edit_admin_user_registration_path
+  end
+  
+  action_item :show, only: :show do
+    link_to 'Delete Account', admin_user_registration_path, method: :delete, data: {confirm: "Are you sure?"}
+  end
 
   show do
     attributes_table do
@@ -26,38 +37,8 @@ ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
     end
   end
 
-  form do |f|
-    f.inputs do
-      f.input :shop_name
-      # f.input :email
-      f.input :password
-      f.input :password_confirmation
-      f.input :current_password
-      f.input :longitude
-      f.input :latitude
-    end
-    f.actions
-  end
-
   controller do
     rescue_from ActiveRecord::RecordNotFound, with: -> { return_to_list }
-
-    def index
-      # super
-      redirect_to admin_shop_url(current_admin_user)
-    end
-
-    # def update
-    #   if current_admin_user.password == permitted_params[:current_password]
-    #     if current_admin_user.update(permitted_params.except(:current_password, :email))
-    #       flash[:notice] = "Profile has been updated successfully"
-    #       redirect_to admin_shop_url(current_admin_user)
-    #     end
-    #   else
-    #     flash[:notice] = "Current password is incorrect"
-    #     render action: "edit"
-    #   end
-    # end
 
     def return_to_list
       redirect_to admin_root_path
@@ -65,17 +46,6 @@ ActiveAdmin.register AdminUser, as: "profile", namespace: :shops do
 
     def scoped_collection
       end_of_association_chain.where(id: current_admin_user.id)
-    end
-
-    private
-
-    def permitted_params
-      hash = params.require(:admin_user).permit(
-        :shop_name, :email, :current_password,
-        :password, :password_confirmation, :merchant_id, :longitude, :latitude
-      )
-
-      hash.reject { |k, v| v.empty? or v.nil? }
     end
   end
 end

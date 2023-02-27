@@ -7,6 +7,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :origin
       t.integer :quantity, default: 1
       t.text :description
+      t.boolean :trending, default: false
       t.belongs_to :category, null: false, foreign_key: true
       t.belongs_to :admin_user, null: false, foreign_key: true
 
