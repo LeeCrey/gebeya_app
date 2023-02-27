@@ -20,7 +20,7 @@ gem "active_model_serializers", "~> 0.10.13"
 gem "counter_culture", "~> 3.2"
 
 gem "redis", "~> 4.0"
-# gem "sidekiq", "~> 7.0"
+gem "sidekiq", "~> 7.0"
 gem "devise"
 gem "devise-jwt"
 
