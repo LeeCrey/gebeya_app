@@ -17,6 +17,23 @@ class Customers::RegistrationsController < Devise::RegistrationsController
   end
 
   # Overriding
+  def update
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
+
+    resource_updated = update_resource(resource, account_update_params)
+
+    if resource_updated
+      render json: { okay: true, message: I18n.t("devise.registrations.updated") }, status: :created
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+
+      render json: { okay: false, message: resource.errors.full_messages.first }, status: :unprocessable_entity
+    end
+  end
+
+  # Overriding
   def destroy
     pwd = params[:password]
 
@@ -42,17 +59,15 @@ class Customers::RegistrationsController < Devise::RegistrationsController
     params.require(:customer).permit(:first_name, :last_name, :email, :password, :password_confirmation)
   end
 
-  # Overriding
   def account_update_params
-    hash = params.permit(:first_name, :last_name,
-                         :current_password, :password_confirmation,
-                         :password, :profile)
-
-    hash
-    # params.require(:customer).permit(
-    #   :first_name, :last_name,
-    #   :current_password,
-    #   :password, :password_confirmation
-    # )
+    params.require(:customer).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password)
   end
+
+  # def respond_with(resource, _opts = {})
+  #   if flash[:alert]
+  #     render json: { okay: false, message: flash[:alert] }, status: :unprocessable_entity
+  #   elsif flash[:notice]
+  #     render json: { okay: true, message: flash[:notice] }, status: :created
+  #   end
+  # end
 end
