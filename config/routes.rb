@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require "sidekiq/web"
+# require "sidekiq/web"
 
 Rails.application.routes.draw do
   get "/", to: redirect("/admin")
