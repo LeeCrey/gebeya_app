@@ -23,7 +23,9 @@ class Customers::RegistrationsController < Devise::RegistrationsController
     render json: { okay: false, message: "Password required to ensure" } and return if !pwd
 
     if current_customer.valid_password?(params[:password])
-      CustomerAccountDeleteJob.perform_async
+      # CustomerAccountDeleteJob.perform_async
+      resource.destroy
+      Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
 
       render json: { okay: true, message: I18n.t("devise.registrations.destroyed") }, status: :accepted
     else
