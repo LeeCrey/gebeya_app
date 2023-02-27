@@ -2,10 +2,10 @@ ActiveAdmin.setup do |config|
   config.namespace :admins do |admin|
     config.download_links = false
     config.batch_actions = false
-    admin.build_menu :default do |menu|
-      menu.add label: "Workers", url: "/admin/workers"
-       #, html_options: { target: :blank }
-    end
+    # admin.build_menu :default do |menu|
+    #   menu.add label: "Workers", url: "/admin/workers"
+    #    #, html_options: { target: :blank }
+    # end
   end
 
   # config.namespace :shop do |shop|

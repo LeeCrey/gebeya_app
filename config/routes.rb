@@ -22,11 +22,6 @@ Rails.application.routes.draw do
              }
   ActiveAdmin.routes(self)
 
-  # manage jobs
-  authenticate :admin_user, ->(admin_users) { admin_users.admin? } do
-    mount Sidekiq::Web => "/admin/workers"
-  end
-
   # Products
   resources :products, only: %i[index show] do
     resources :votes, shallow: true, only: %i[create update destroy]
