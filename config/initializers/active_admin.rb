@@ -2,6 +2,10 @@ ActiveAdmin.setup do |config|
   config.namespace :admins do |admin|
     config.download_links = false
     config.batch_actions = false
+    admin.build_menu :default do |menu|
+      menu.add label: "Workers", url: "/admin/workers"
+       #, html_options: { target: :blank }
+    end
   end
 
   # config.namespace :shop do |shop|
@@ -247,11 +251,11 @@ ActiveAdmin.setup do |config|
   #
   # If you wanted to add a static menu item to the default menu provided:
   #
-  #   config.namespace :admin do |admin|
-  #     admin.build_menu :default do |menu|
-  #       menu.add label: "My Great Website", url: "http://www.mygreatwebsite.com", html_options: { target: :blank }
-  #     end
-  #   end
+  config.namespace :admin do |admin|
+    admin.build_menu :default do |menu|
+      menu.add label: "Workers", url: "/admin/workers" #, html_options: { target: :blank }
+    end
+  end
 
   # == Download Links
   #

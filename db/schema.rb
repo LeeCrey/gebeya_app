@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_04_091021) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_24_155646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,12 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_091021) do
     t.string "shop_name"
     t.float "longitude"
     t.float "latitude"
-    t.string "merchant_id", default: "", null: false
     t.boolean "admin", default: false, null: false
     t.boolean "super_admin", default: false, null: false
-    t.integer "products_count", default: 0, null: false
-    t.integer "orders_count", default: 0, null: false
-    t.decimal "balance", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
@@ -66,6 +62,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_091021) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.integer "products_count", default: 0, null: false
+    t.integer "orders_count", default: 0, null: false
+    t.decimal "balance", default: "0.0", null: false
     t.index ["confirmation_token"], name: "index_admin_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
@@ -103,9 +102,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_091021) do
   create_table "customers", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
-    t.float "longitude"
-    t.float "latitude"
-    t.decimal "balance", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
@@ -120,6 +116,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_091021) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.float "longitude"
+    t.float "latitude"
+    t.decimal "balance", default: "0.0", null: false
     t.index ["confirmation_token"], name: "index_customers_on_confirmation_token", unique: true
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
@@ -224,29 +223,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_091021) do
   add_foreign_key "carts", "customers"
   add_foreign_key "feedbacks", "customers"
   add_foreign_key "order_items", "orders"
-  add_foreign_key "order_items", "products"
+  add_foreign_key "order_items", "products", on_delete: :cascade
   add_foreign_key "orders", "admin_users"
   add_foreign_key "orders", "customers"
-  add_foreign_key "product_comments", "customers"
-  add_foreign_key "product_comments", "products"
-  add_foreign_key "products", "admin_users"
-  add_foreign_key "products", "categories"
-  add_foreign_key "search_histories", "customers"
-  create_function :geodistance, sql_definition: <<-'SQL'
-      CREATE OR REPLACE FUNCTION public.geodistance(alat double precision, alng double precision, blat double precision, blng double precision)
-       RETURNS double precision
-       LANGUAGE sql
-       IMMUTABLE
-      AS $function$
-      SELECT asin(
-        sqrt(
-          sin(radians($3-$1)/2)^2 +
-          sin(radians($4-$2)/2)^2 *
-          cos(radians($1)) *
-          cos(radians($3))
-        )
-      ) * 7926.3352 AS distance;
-      $function$
-  SQL
-
-end

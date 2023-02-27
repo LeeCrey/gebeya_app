@@ -20,5 +20,6 @@ module RubyRailsPostgres
     # config.eager_load_paths << Rails.root.join("extras")
 
     # config.hosts << "gebeya.loca.lt"
+    config.active_job.queue_adapter = :sidekiq
   end
 end

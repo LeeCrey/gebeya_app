@@ -16,15 +16,28 @@ class Customers::RegistrationsController < Devise::RegistrationsController
     render json: { okay: true, message: message }, status: :created
   end
 
+  # Overriding
+  def destroy
+    pwd = params[:password]
+
+    render json: { okay: false, message: "Password required to ensure" } and return if !pwd
+
+    if current_customer.valid_password?(params[:password])
+      CustomerAccountDeleteJob.perform_async
+
+      render json: { okay: true, message: I18n.t("devise.registrations.destroyed") }, status: :accepted
+    else
+      render json: { okay: false, message: I18n.t("password.do_not_match") }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   include RegistrationsConcern
 
   # Overriding
   def sign_up_params
-    params.require(:customer).permit(
-      :first_name, :last_name, :email,
-      :password, :password_confirmation)
+    params.require(:customer).permit(:first_name, :last_name, :email, :password, :password_confirmation)
   end
 
   # Overriding

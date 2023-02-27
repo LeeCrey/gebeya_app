@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "sidekiq/web"
 
 Rails.application.routes.draw do
   get "/", to: redirect("/admin")
@@ -20,6 +21,11 @@ Rails.application.routes.draw do
                registrations: "shops/registrations",
              }
   ActiveAdmin.routes(self)
+
+  # manage jobs
+  authenticate :admin_user, ->(admin_users) { admin_users.admin? } do
+    mount Sidekiq::Web => "/admin/workers"
+  end
 
   # Products
   resources :products, only: %i[index show] do

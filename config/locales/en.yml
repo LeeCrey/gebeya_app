@@ -11,3 +11,6 @@ en:
     success: Payment successfull
     insuffient: Your balance is insufficient
     paid: Order was paid before
+  
+  password:
+    do_not_match: Passwords don't match
