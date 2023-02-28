@@ -6,6 +6,8 @@ class ProfileController < ApplicationController
 
   before_action :authenticate_customer!
 
+  include ActionView::Helpers::NumberHelper
+
   #  /customer
   def show
     render json: current_customer
@@ -16,5 +18,9 @@ class ProfileController < ApplicationController
     current_customer.search_histories.destroy_all
 
     head :no_content
+  end
+
+  def balance
+    render json: { balance: number_to_currency(current_customer.balance) }
   end
 end

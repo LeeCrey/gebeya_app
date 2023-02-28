@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   # CUSTOMER
   post "feedbacks" => "feedback#create"
   get "customer" => "profile#show"
+  get "balance" => "profile#balance" # temeporary route
 
   match "*unmatched", to: "application#not_found_method", via: :all
 end
