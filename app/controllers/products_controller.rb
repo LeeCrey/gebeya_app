@@ -4,7 +4,6 @@ class ProductsController < ApplicationController
   protect_from_forgery with: :null_session
   respond_to :json
 
-  # append_before_action :recommend, :trending, only: %i[index]
   before_action :set_offset, only: %i[index search]
   before_action :get_neareset_shops, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
@@ -21,14 +20,10 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
-    @product = Product.includes(images_attachments: :blob).where(id: params[:id]).first
-    # if stale? @prdouct
+    @product = Product.where(id: params[:id]).first
     @related = Product.includes(images_attachments: :blob)
       .where(category_id: @product.category_id)
-      .where.not(id: (@exclude_ids << @product.id))
-      .references(:images_attachments)
-      .last(6)
-    # .random_records(6)
+      .where.not(id: (@exclude_ids << @product.id)).order("random()").last(6)
 
     lst = @related.last
 
@@ -37,7 +32,6 @@ class ProductsController < ApplicationController
     else
       render_show_with_comment if stale? [@product]
     end
-    # end
   end
 
   # GET /categories

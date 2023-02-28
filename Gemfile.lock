@@ -92,7 +92,7 @@ GEM
       activesupport (>= 3.0.0, < 7.1)
       ruby2_keywords (>= 0.0.2, < 1.0)
     aws-eventstream (1.2.0)
-    aws-partitions (1.716.0)
+    aws-partitions (1.717.0)
     aws-sdk-core (3.170.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -135,7 +135,6 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.3)
-    debug (1.7.1)
     devise (4.9.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -354,7 +353,6 @@ DEPENDENCIES
   counter_culture (~> 3.2)
   database_cleaner
   database_cleaner-active_record
-  debug
   devise
   devise-jwt
   fx (~> 0.7.0)

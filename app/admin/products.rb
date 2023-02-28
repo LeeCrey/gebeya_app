@@ -20,6 +20,10 @@ ActiveAdmin.register Product, namespace: "shops" do
   filter :category
   filter :trending
 
+  scope "Trending" do |products|
+    products.where(trending: true).where(admin_user_id: current_admin_user.id)
+  end
+
   # index page
   index do
     column :id

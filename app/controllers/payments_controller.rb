@@ -15,13 +15,14 @@ class PaymentsController < ApplicationController
       render json: { okay: false, message: I18n.t("payment.paid") }, status: :unprocessable_entity
     else
       customer = current_customer
-      total = @order.items.includes(:product).sum("order_items.quantity * CASE WHEN products.discount IS NULL THEN 
+      items = @order.items.includes(:product)
+      total = items.sum("order_items.quantity * CASE WHEN products.discount IS NULL THEN 
         products.price ELSE products.price - products.discount END")
       balance = customer.balance
       if total > customer.balance
         render json: { okay: false, message: I18n.t("payment.insuffient") }, status: :unprocessable_entity
       else
-        do_transaction(customer, total)
+        do_transaction(customer, total, items)
 
         render json: { okay: true, message: I18n.t("payment.success") }, status: :created
       end
@@ -34,7 +35,7 @@ class PaymentsController < ApplicationController
     @order = Order.find(params[:order_id])
   end
 
-  def do_transaction(customer, total)
+  def do_transaction(customer, total, items)
     ActiveRecord::Base.transaction do
       customer.balance -= total # withdraw
       admin_user = @order.admin_user
