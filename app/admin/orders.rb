@@ -10,13 +10,17 @@ ActiveAdmin.register Order, namespace: "shops" do
 
   includes([:customer])
 
-  # # Scopes
-  scope "Pending", group: :status do |orders|
-    orders.pending
+  scope "All" do |orders|
+    current_admin_user.orders
   end
 
-  scope "Paid", group: :status do |orders|
-    orders.where(status: :paid)
+  # # Scopes
+  scope "Pending", group: :status do
+    current_admin_user.orders.pending
+  end
+
+  scope "Paid", group: :status do
+    current_admin_user.orders.paid
   end
 
   # index page

@@ -12,9 +12,4 @@ class Order < ApplicationRecord
     pending: 0,
     paid: 1,
   }, default: :pending
-
-  # Scopes
-  scope :paid, ->(shop_id) {
-          where(admin_user_id: shop_id, status: 4)
-        }
 end

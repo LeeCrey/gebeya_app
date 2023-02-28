@@ -20,8 +20,16 @@ ActiveAdmin.register Product, namespace: "shops" do
   filter :category
   filter :trending
 
+  scope "All" do |products|
+    products.where(admin_user_id: current_admin_user.id)
+  end
+
   scope "Trending" do |products|
     products.where(trending: true).where(admin_user_id: current_admin_user.id)
+  end
+
+  scope "Out of stock" do |products|
+    products.where(quantity: 0).where(admin_user_id: current_admin_user.id)
   end
 
   # index page
