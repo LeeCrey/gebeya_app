@@ -7,22 +7,29 @@ class PaymentsController < ApplicationController
   respond_to :json
 
   before_action :authenticate_customer!
-  before_action :set_order
+  before_action :set_order, only: %i[create]
 
-  #   /orders/:order_id/payments
+  # POST  /orders/:order_id/payments
   def create
     if @order.paid?
       render json: { okay: false, message: I18n.t("payment.paid") }, status: :unprocessable_entity
     else
       customer = current_customer
-      items = @order.items.includes(:product)
-      total = items.sum("order_items.quantity * CASE WHEN products.discount IS NULL THEN 
-        products.price ELSE products.price - products.discount END")
+
+      if @order.customer_id != customer.id
+        render json: { okay: false, message: "You can not pay some ones order" }, status: :unprocessable_entity and return
+      end
+
+      @items = @order.items.includes(:product)
+
+      qry = "order_items.quantity * CASE WHEN products.discount IS NULL THEN products.price ELSE products.price - products.discount END"
+      total = @items.sum(qry)
       balance = customer.balance
+
       if total > customer.balance
         render json: { okay: false, message: I18n.t("payment.insuffient") }, status: :unprocessable_entity
       else
-        do_transaction(customer, total, items)
+        do_transaction(customer, total, @items)
 
         render json: { okay: true, message: I18n.t("payment.success") }, status: :created
       end
@@ -43,6 +50,13 @@ class PaymentsController < ApplicationController
       customer.save!
       admin_user.save!
       @order.paid!
+      ids = {}
+      # causing N+1 query, fix this if you can.
+      items.map do |x|
+        p = x.product
+        ids[p.id] = { quantity: (p.quantity - x.quantity) }
+      end
+      Product.update(ids.keys, ids.values)
     end
   end
 end

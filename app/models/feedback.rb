@@ -4,6 +4,6 @@ class Feedback < ApplicationRecord
   belongs_to :customer
 
   scope :recent, ->(limit) do
-          includes(:customer).order(id: :desc).limit(limit).references(:customer)
+          includes(:customer).order(id: :desc).limit(limit)
         end
 end
