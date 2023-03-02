@@ -22,8 +22,9 @@ class ProductsController < ApplicationController
   def show
     @product = Product.where(id: params[:id]).first
     @related = Product.includes(images_attachments: :blob)
-      .where(category_id: @product.category_id)
-      .where.not(id: (@exclude_ids << @product.id)).order("random()").last(6)
+      .where(category_id: @product.category_id, trending: false)
+      .where.not(id: (@exclude_ids << @product.id))
+      .order("random()").limit(6)
 
     lst = @related.last
 

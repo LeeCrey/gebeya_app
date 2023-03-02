@@ -27,16 +27,16 @@ module ProductConcern
           end
     scope :with_category, ->(category, exclude_ids, shop_ids, offset) do
             includes(images_attachments: :blob)
-              .where(category_id: category.id, admin_user_id: shop_ids)
+              .where(category_id: category.id, admin_user_id: shop_ids, trending: false)
               .where.not(id: exclude_ids, quantity: 0)
-              .order('random()').offset(offset).limit(8)
+              .order("random()").offset(offset).limit(8)
           end
 
     scope :get_list_but_exclude, ->(ids, shop_ids, offset) do
             includes(images_attachments: :blob)
-              .where(admin_user_id: shop_ids)
+              .where(admin_user_id: shop_ids, trending: false)
               .where.not(id: ids, quantity: 0)
-              .order('random()').offset(offset).limit(8)
+              .order("random()").offset(offset).limit(8)
           end
   end
 

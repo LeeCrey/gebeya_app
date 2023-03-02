@@ -8,11 +8,11 @@ ActiveAdmin.register AdminUser, as: "Profile", namespace: :shops do
   actions :all, except: %i[edit edit update destroy]
 
   action_item :show, only: :show do
-    link_to 'Edit Account', edit_admin_user_registration_path
+    link_to "Edit Account", edit_admin_user_registration_path
   end
-  
+
   action_item :show, only: :show do
-    link_to 'Delete Account', admin_user_registration_path, method: :delete, data: {confirm: "Are you sure?"}
+    link_to "Delete Account", admin_user_registration_path, method: :delete, data: { confirm: "Are you sure?" }
   end
 
   show do

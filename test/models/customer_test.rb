@@ -25,7 +25,7 @@ class CustomerTest < ActiveSupport::TestCase
     customer.password_confirmation = "123456"
     customer.email = @first.email
 
-    assert_raise ActiveRecord::RecordInvalid do 
+    assert_raise ActiveRecord::RecordInvalid do
       customer.save!
     end
   end

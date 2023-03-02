@@ -1,7 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
-require 'database_cleaner/active_record'
+require "database_cleaner/active_record"
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers

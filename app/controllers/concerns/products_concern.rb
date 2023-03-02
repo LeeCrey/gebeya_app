@@ -20,16 +20,17 @@ module ProductsConcern
     if customer_signed_in?
       histories = current_customer.search_histories
       if histories.count != 0
-        history = histories.order('random()').limit(1).first.body
+        history = histories.order("random()").limit(1).first.body
         @exclude_ids += @products.map(&:id)
-        @recommend = Product.includes(images_attachments: :blob).joins(:category).where.not(id: @exclude_ids)
+        @recommend = Product.includes(images_attachments: :blob).joins(:category)
+          .where.not(id: @exclude_ids, trending: true)
           .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{history}%", history)
           .order(id: :desc).limit(6)
       else
         @recommend = []
       end
     else
-      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products).order('random()').limit(6)
+      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products, trending: true).order("random()").limit(6)
     end
   end
 
