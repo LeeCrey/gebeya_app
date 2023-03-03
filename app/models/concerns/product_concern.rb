@@ -25,18 +25,17 @@ module ProductConcern
     scope :recent, ->(limit, shop_id) do
             where(admin_user_id: shop_id.id).order(id: :asc).limit(limit)
           end
-    scope :with_category, ->(category, exclude_ids, shop_ids, offset) do
+    scope :with_category, ->(category, exclude_ids, shop_ids) do
             includes(images_attachments: :blob)
-              .where(category_id: category.id, admin_user_id: shop_ids, trending: false)
-              .where.not(id: exclude_ids, quantity: 0)
-              .order("random()").offset(offset).limit(8)
+              .where(category_id: category.id, admin_user_id: shop_ids)
+              .where.not(id: exclude_ids, quantity: 0, trending: true).order("random()").limit(8)
           end
 
-    scope :get_list_but_exclude, ->(ids, shop_ids, offset) do
+    scope :get_list_but_exclude, ->(ids, shop_ids) do
+          # debugger
             includes(images_attachments: :blob)
-              .where(admin_user_id: shop_ids, trending: false)
-              .where.not(id: ids, quantity: 0)
-              .order("random()").offset(offset).limit(8)
+              .where(admin_user_id: shop_ids)
+              .where.not(id: ids, quantity: 0, trending: true).order("random()").limit(8)
           end
   end
 
