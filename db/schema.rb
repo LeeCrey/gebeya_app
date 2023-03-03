@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_27_160310) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_03_075314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -200,6 +200,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_27_160310) do
     t.index ["customer_id"], name: "index_search_histories_on_customer_id"
   end
 
+  create_table "test_db_users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "votes", force: :cascade do |t|
     t.string "votable_type"
     t.bigint "votable_id"
@@ -248,4 +255,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_27_160310) do
       ) * 7926.3352 AS distance;
       $function$
   SQL
+
 end

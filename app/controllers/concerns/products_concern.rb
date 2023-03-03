@@ -23,20 +23,21 @@ module ProductsConcern
         history = histories.order("random()").limit(1).first.body
         @exclude_ids += @products.map(&:id)
         @recommend = Product.includes(images_attachments: :blob).joins(:category)
-          .where.not(id: @exclude_ids, trending: true)
+          .where.not(id: @exclude_ids, trending: true, quantity: 0)
           .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{history}%", history)
           .order(id: :desc).limit(6)
       else
         @recommend = []
       end
     else
-      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products, trending: true).order("random()").limit(6)
+      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products, trending: true, quantity: 0).order("random()").limit(6)
     end
   end
 
   # 5 products are enough
   def set_trending
-    @trending = Product.includes(images_attachments: :blob).where(trending: true).order("random()").limit(6)
+    @trending = Product.includes(images_attachments: :blob)
+    .where(trending: true).where.not(quantity: 0).order("random()").limit(6)
   end
 
   def set_exclude_ids

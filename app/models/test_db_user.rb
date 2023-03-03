@@ -1,0 +1,2 @@
+class TestDbUser < ApplicationRecord
+end

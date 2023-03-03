@@ -24,7 +24,7 @@ class AdminUser < ApplicationRecord
   scope :nearest, ->(lat, long) {
           find_by_sql("
             SELECT id, geodistance(latitude, longitude, #{lat}, #{long}) * 1.609344 as distance FROM admin_users
-            WHERE(longitude IS NOT NULL AND latitude IS NOT NULL AND admin = false) ORDER BY distance ASC LIMIT 20")
+            WHERE(longitude IS NOT NULL AND latitude IS NOT NULL AND admin = false) ORDER BY distance ASC LIMIT 10")
         }
 
   def name
