@@ -15,7 +15,7 @@ class CartsController < ApplicationController
 
       resp = {
         okay: true,
-        carts: ActiveModelSerializers::SerializableResource.new(@carts, each_serializer: CartSerializer)
+        carts: ActiveModelSerializers::SerializableResource.new(@carts, each_serializer: CartSerializer),
       }
       render json: resp
     end

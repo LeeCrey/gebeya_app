@@ -64,12 +64,14 @@ class ProductsController < ApplicationController
     offset = params[:offset]&.to_i * 10
 
     query.downcase!
-    product_name = "%#{query}%"
     products = Product.joins(:category).includes(:category, images_attachments: :blob)
-      .where("LOWER(TRIM(products.name)) LIKE ? OR LOWER(TRIM(categories.name)) LIKE ? ", "%#{product_name}%", query)
-      .where.not(id: @exclude_ids, quantity: 0, trending: true).order(id: :desc).offset(offset).limit(10)&.to_a
+      .where("LOWER(TRIM(products.name)) LIKE ? OR LOWER(TRIM(categories.name)) LIKE ? ", "%#{query}%", query)
+      .where.not(id: @exclude_ids).order(id: :desc).offset(offset).limit(10)&.to_a
 
-    current_customer.search_histories.new(body: query).save if customer_signed_in?
+      if customer_signed_in?
+        history = current_customer.search_histories.new(body: query)
+        history.save
+      end
 
     render json: { products: product_serializer_helper(products) }
   end

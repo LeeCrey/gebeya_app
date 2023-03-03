@@ -32,7 +32,7 @@ module ProductConcern
           end
 
     scope :get_list_but_exclude, ->(ids, shop_ids) do
-          # debugger
+            # debugger
             includes(images_attachments: :blob)
               .where(admin_user_id: shop_ids)
               .where.not(id: ids, quantity: 0, trending: true).order("random()").limit(8)

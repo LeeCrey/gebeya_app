@@ -255,5 +255,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_03_075314) do
       ) * 7926.3352 AS distance;
       $function$
   SQL
-
 end
