@@ -20,10 +20,18 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
-    @product = Product.where(id: params[:id]).first
+    @product = Product.includes(images_attachments: :blob).where(id: params[:id]).first
+    lat = params[:latitude]
+    long = params[:longitude]
+    if lat.nil? or lat.empty?
+      render json: { okay: false, messge: "Latitude and longitude are needed" }, status: :bad_request and return
+    end
+
+    nearest_shps = AdminUser.nearest(lat, long).map(&:id)
     @related = Product.includes(images_attachments: :blob)
+      .where(admin_user_id: nearest_shps)
       .where(category_id: @product.category_id, trending: false)
-      .where.not(id: (@exclude_ids << @product.id), quantity: 0).order("random()").limit(6)
+      .where.not(id: (@exclude_ids << @product.id), quantity: 0).order("random()").limit(8)
 
     lst = @related.last
 
