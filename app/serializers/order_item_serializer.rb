@@ -3,7 +3,7 @@ class OrderItemSerializer < ActiveModel::Serializer
   attributes :id, :quantity, :product, :item_image
 
   def product
-    object.product.slice(:name, :price, :discount, :quantity)
+    object.product.slice(:id, :name, :price, :discount, :quantity)
   end
 
   def item_image

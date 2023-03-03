@@ -13,7 +13,11 @@ class CartsController < ApplicationController
     if stale? @carts
       expires_in 3.day
 
-      render json: @carts
+      resp = {
+        okay: true,
+        carts: ActiveModelSerializers::SerializableResource.new(@carts, each_serializer: CartSerializer)
+      }
+      render json: resp
     end
   end
 
