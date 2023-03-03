@@ -29,7 +29,8 @@ module ProductsConcern
         @recommend = []
       end
     else
-      @recommend = Product.includes(images_attachments: :blob).where.not(id: @products, trending: true, quantity: 0).order("random()").limit(6)
+      @recommend = Product.includes(images_attachments: :blob)
+      .where.not(id: @products, trending: true, quantity: 0).order("random()").limit(6)
     end
   end
 
