@@ -8,8 +8,10 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: %i[create]
 
   def index
+    @orders = current_customer.orders.includes(:admin_user)
+
     if stale? @orders
-      @orders = current_customer.orders.includes(:admin_user).limit(10)
+      expires_in 3.day
 
       render json: @orders
     end

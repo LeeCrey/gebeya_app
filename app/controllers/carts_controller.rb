@@ -11,11 +11,9 @@ class CartsController < ApplicationController
     @carts = current_customer.carts.includes(:admin_user)
 
     if stale? @carts
-      expires_in 1.day
+      expires_in 3.day
 
-      carts_json = ActiveModelSerializers::SerializableResource.new(@carts, each_serializer: CartSerializer)
-
-      render json: { carts: carts_json }
+      render json: @carts
     end
   end
 

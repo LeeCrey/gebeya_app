@@ -31,7 +31,8 @@ class ProductsController < ApplicationController
     @related = Product.includes(images_attachments: :blob)
       .where(admin_user_id: nearest_shps)
       .where(category_id: @product.category_id, trending: false)
-      .where.not(id: (@exclude_ids << @product.id), quantity: 0).order("random()").limit(8)
+      .where.not(id: (@exclude_ids << @product.id), quantity: 0)
+      .order("random()").limit(8)
 
     lst = @related.last
 
