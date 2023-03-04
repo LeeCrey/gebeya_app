@@ -10,9 +10,9 @@ gem "puma", "~> 5.0"
 gem "pg", "~> 1.4"
 
 gem "sprockets-rails"
-gem "importmap-rails"
-gem "turbo-rails"
-gem "stimulus-rails"
+# gem "importmap-rails"
+# gem "turbo-rails"
+# gem "stimulus-rails"
 gem "sassc-rails"
 
 gem "active_storage_validations"
@@ -43,7 +43,7 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 gem "bootsnap", require: false
 
 group :development, :test do
-  # gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "debug", platforms: %i[mri mingw x64_mingw]
   # gem "bullet"
   # gem "figaro", "~> 1.2"
 end
