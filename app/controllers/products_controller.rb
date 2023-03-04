@@ -7,7 +7,8 @@ class ProductsController < ApplicationController
   before_action :set_offset, only: %i[index search]
   before_action :get_neareset_shops, only: %i[index]
   before_action :set_exclude_ids, only: %i[index show search]
-  append_before_action :set_category, :set_trending, :list_of_products, :prepare_recommended, only: %i[index]
+  before_action :set_category, :set_trending, :list_of_products, only: %i[index]
+  before_action :prepare_recommended, only: %i[index]
 
   # GET /products or /products.json
   def index

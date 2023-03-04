@@ -30,15 +30,25 @@ module ProductConcern
               .where(category_id: category.id, admin_user_id: shop_ids)
               .where.not(id: exclude_ids, trending: true)
               .where.not(quantity: 0)
-              .order("random()").limit(12)
+              .order("random()")
+              .limit(12)
           end
 
     scope :get_list_but_exclude, ->(ids, shop_ids) do
-            includes(images_attachments: :blob)
-              .where(admin_user_id: shop_ids)
-              .where.not(id: ids)
-              .where.not(quantity: 0, trending: true)
-              .order("random()").limit(12)
+            if ids.empty?
+              includes(images_attachments: :blob)
+                .where(admin_user_id: shop_ids)
+                .where.not(quantity: 0, trending: true)
+                .order("random()")
+                .limit(12)
+            else
+              includes(images_attachments: :blob)
+                .where(admin_user_id: shop_ids)
+                .where.not(id: ids)
+                .where.not(quantity: 0, trending: true)
+                .order("random()")
+                .limit(12)
+            end
           end
   end
 

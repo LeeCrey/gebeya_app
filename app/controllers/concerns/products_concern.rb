@@ -16,21 +16,22 @@ module ProductsConcern
 
   # GET /recommend
   def prepare_recommended
+    ids = @products.map(&:id)
     if customer_signed_in?
       histories = current_customer.search_histories
       if histories.size != 0
-        @exclude_ids += @products.map(&:id)
+        @exclude_ids += ids
         history = histories.order("random()").limit(1).first.body
         @recommend = Product.includes(images_attachments: :blob).joins(:category)
           .where.not(id: @exclude_ids, quantity: 0, trending: true)
-          .where("lower(products.name) LIKE ? OR lower(categories.name) LIKE ? ", "%#{history}%", history)
+          .where("LOWER(products.name) LIKE ? OR LOWER(categories.name) LIKE ? ", "%#{history}%", history)
           .order(id: :desc).limit(6)
       else
         @recommend = []
       end
     else
       @recommend = Product.includes(images_attachments: :blob)
-        .where.not(id: @products.map(&:id), trending: true, quantity: 0).order("random()").limit(6)
+        .where.not(id: ids, quantity: 0).where(trending: false).order("random()").limit(7)
     end
   end
 
