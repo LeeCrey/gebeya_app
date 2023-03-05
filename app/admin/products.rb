@@ -125,10 +125,16 @@ ActiveAdmin.register Product, namespace: "shops" do
     # EDIT
     def edit
       redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
+
+      # super
     end
 
     def update
-      redirect_to shops_products_path and return if resource.admin_user_id != current_admin_user.id
+      if resource.admin_user_id != current_admin_user.id
+        redirect_to shops_products_path and return
+      else
+        super
+      end
     end
 
     # create
