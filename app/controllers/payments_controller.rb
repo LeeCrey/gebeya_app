@@ -22,16 +22,25 @@ class PaymentsController < ApplicationController
 
       @items = @order.items.includes(:product)
 
-      qry = "order_items.quantity * CASE WHEN products.discount IS NULL THEN products.price ELSE products.price - products.discount END"
-      total = @items.sum(qry)
-      balance = customer.balance
+      out_of_stock_items = @items.where(product: { quantity: 0 })
 
-      if total > customer.balance
-        render json: { okay: false, message: I18n.t("payment.insuffient") }, status: :unprocessable_entity
+      if out_of_stock_items.size == 0
+        qry = "order_items.quantity * CASE WHEN products.discount IS NULL THEN products.price ELSE products.price - products.discount END"
+        total = @items.sum(qry)
+        balance = customer.balance
+  
+        if total > customer.balance
+          render json: { okay: false, message: I18n.t("payment.insuffient") }, status: :unprocessable_entity
+        else
+          do_transaction(customer, total, @items)
+  
+          render json: { okay: true, message: I18n.t("payment.success") }, status: :created
+        end
       else
-        do_transaction(customer, total, @items)
-
-        render json: { okay: true, message: I18n.t("payment.success") }, status: :created
+        names = ->(x) { x.product.name }
+        product_names = out_of_stock_items.map(&names).join(',')
+        msg = product_names + " is out of stock in the shop. Please find this product is another shop."
+        render json: { okay: false, message: msg }, status: :unprocessable_entity
       end
     end
   end

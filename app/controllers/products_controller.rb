@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
 
   before_action :set_offset, only: %i[index search]
   before_action :get_neareset_shops, only: %i[index]
-  before_action :set_exclude_ids, only: %i[index show search]
+  before_action :set_exclude_ids, only: %i[index show]
   before_action :set_category, :set_trending, :list_of_products, only: %i[index]
   before_action :prepare_recommended, only: %i[index]
 
@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
-    @product = Product.includes(images_attachments: :blob).where(id: params[:id]).first
+    @product = Product.includes(images_attachments: :blob).find_by_id(params[:id])
     lat = params[:latitude]
     long = params[:longitude]
     if lat.nil? or lat.empty?
@@ -29,10 +29,11 @@ class ProductsController < ApplicationController
     end
 
     nearest_shps = AdminUser.nearest(lat, long).map(&:id)
+    @exclude_ids.push(@product.id)
     @related = Product.includes(images_attachments: :blob)
       .where(admin_user_id: nearest_shps)
       .where(category_id: @product.category_id, trending: false)
-      .where.not(id: (@exclude_ids << @product.id), quantity: 0)
+      .where.not(id: @exclude_ids, quantity: 0)
       .order("random()").limit(8)
 
     lst = @related.last
@@ -65,14 +66,11 @@ class ProductsController < ApplicationController
     offset = params[:offset]&.to_i * 10
 
     query.downcase!
-    products = Product.joins(:category).includes(:category, images_attachments: :blob)
+    products = Product.joins(:category).includes(images_attachments: :blob)
       .where("LOWER(TRIM(products.name)) LIKE ? OR LOWER(TRIM(categories.name)) LIKE ? ", "%#{query}%", query)
       .where.not(id: @exclude_ids).order(id: :desc).offset(offset).limit(10)&.to_a
 
-      if customer_signed_in?
-        history = current_customer.search_histories.new(body: query)
-        history.save
-      end
+    current_customer.search_histories.new(body: query).save if customer_signed_in?
 
     render json: { products: product_serializer_helper(products) }
   end

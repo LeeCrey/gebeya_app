@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   # Orders
   resources :orders, only: %i[index show] do
     resources :payments, only: %[create]
-    resources :order_items, as: :items, path: "items", only: %[index]
+    resources :order_items, as: :items, path: "items", only: %i[index destroy], shallow: true
   end
 
   # CUSTOMER

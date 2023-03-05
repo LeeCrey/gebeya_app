@@ -19,7 +19,7 @@ module ProductConcern
     validates :images, attached: true,
                        processable_image: true,
                        content_type: %i[png jpg jpeg webp],
-                       size: { less_than: 1.megabytes, message: "is too large" }
+                       size: { less_than: 2.megabytes, message: "is too large" }
 
     # SCOPES
     scope :recent, ->(limit, shop_id) do

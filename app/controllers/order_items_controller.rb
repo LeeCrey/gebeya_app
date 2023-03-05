@@ -5,6 +5,7 @@ class OrderItemsController < ApplicationController
   respond_to :json
 
   before_action :authenticate_customer!
+  before_action :find_order_item, only: %i[destroy]
 
   # /orders/:order_id/items
   def index
@@ -17,5 +18,23 @@ class OrderItemsController < ApplicationController
 
       render json: @items
     end
+  end
+
+  # DELETE items/:id
+  def destroy
+    @item.destroy
+
+    order = @item.order
+    if order.items.size == 0
+      order.destroy
+    end
+
+    head :no_content
+  end
+
+  private
+
+  def find_order_item
+    @item = OrderItem.find(params[:id])
   end
 end
